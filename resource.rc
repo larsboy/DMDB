@@ -1,0 +1,15 @@
+/*
+* Framework.rc
+* Icons/bitmaps for the application.
+* This is used when compiling under MS Windows, other systems might require
+* other ways of defining an application icon.
+*/
+
+//Icons for the application and windows:
+//The first icon in this file is used as the application icon by Windows
+top_icon ICON "bitmaps/dmdb.ico"
+
+//This must come AFTER the application icon
+#include "wx/msw/wx.rc"
+
+//Other bitmaps...
