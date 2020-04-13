@@ -68,19 +68,20 @@ Here is an overview of all the source code (most points are .h and .cpp file), o
 * GuiStatistics: Dialogs showing StatisticSet and MapStatistics.
 
 ## Database files & folders
+```
 - FILE_AUTHORDB("people.dmdb"): Each AuthorEntry
-    type (1B), dbid (4B)
-    For each name/alias: length (2B) + UTF8 chars
-    If group: dbid of each member
+	type (1B), dbid (4B)
+	For each name/alias: length (2B) + UTF8 chars
+	If group: dbid of each member
 
 - FILE_AUTHORTEXT("ptext.dmdb"): Description of each person
-    uint32_t: dir offset
-    Text entry for each author:
-        uint16_t length
-        length UTF8 chars, in blocks of 100 bytes (last block padded with 0s)
-    Dir - entry for each author:
-        uint32_t dbid
-        uint32_t textOffset - ref. text entry
+	uint32_t: dir offset
+	Text entry for each author:
+		uint16_t length
+		length UTF8 chars, in blocks of 100 bytes (last block padded with 0s)
+	Dir - entry for each author:
+		uint32_t dbid
+		uint32_t textOffset - ref. text entry
 
 - FILE_TAGS("tags.dmdb"): List of style tags
 	ubyte: tagLength (chars)
@@ -125,10 +126,11 @@ Here is an overview of all the source code (most points are .h and .cpp file), o
 
 - Folder "\sshot": Map screenshots
 	Image file <wad_md5>_<map>.<ext> for each map
-	
+```
+
 ## WadReader
 My overview of the wad processing.
-
+```
 - initReader(filePath)
 	WadArchive->readArchiveFiles()
 - processWads()
@@ -181,3 +183,4 @@ My overview of the wad processing.
 		aspects->mapImages: Draw map, save to file
 
 - clearState()
+```
