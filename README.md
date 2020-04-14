@@ -4,6 +4,8 @@ Doom Map Database is an application for analysing and storing information about 
 
 A binary for Windows is available under [releases](https://github.com/larsboy/DMDB/releases).
 
+![Screenshot](https://raw.githubusercontent.com/wiki/larsboy/DMDB/img/full_50.png)
+
 ## Key features
 - Reads wad and pk3 files, and zips and collections of such files, producing a report on the contents.
 - Analyses level data, in original, Hexen/Zdoom and UDMF formats.
