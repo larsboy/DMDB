@@ -603,6 +603,7 @@ void GuiFrame::onFileRead(wxCommandEvent& event)
 		//Check if we have WadEntry with same MD5 hash
 		unsigned char* chptr = wadReader->getMainDigest();
 		WadEntry* replaceWad = dataBase->findWad(chptr);
+		bool changeHash = false;
 		if (replaceWad != NULL) {
 			wxString mes = "There is already a Wad entry for this file (matching file hash), named "
 				+ replaceWad->getName() + ". A duplicate entry is not allowed. Do you wish to "
@@ -629,6 +630,8 @@ void GuiFrame::onFileRead(wxCommandEvent& event)
 				dlg->Destroy();
 				if (result == wxID_NO)
 					replaceWad = NULL;
+				else
+					changeHash = true;
 			}
 		}
 
@@ -646,7 +649,13 @@ void GuiFrame::onFileRead(wxCommandEvent& event)
 				progDialog->Show();
 				progress = new WadProgress("Process maps");
 				progress->setDialog(progDialog);
-                bool deleted = wadReader->updateEntries(replaceWad, imgFolder, progress);
+				if (changeHash) { //Must rename files identified by wad hash
+					MD5 md5Hash;
+					for (int i=0; i<16; i++)
+						md5Hash.setBytedigest(i, chptr[i]);
+					dataBase->renameFiles(replaceWad, md5Hash.hexdigest());
+				}
+                bool deleted = wadReader->updateEntries(replaceWad, imgFolder, progress, changeHash);
                 progress->setDialog(NULL);
 				progDialog->Close(true);
 				progDialog->Destroy();

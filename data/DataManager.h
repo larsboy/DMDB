@@ -631,6 +631,14 @@ class DataManager
 	*/
 	void deleteWadFiles(WadEntry* wad);
 
+	/*!
+	* Rename additional files which are identified with wad MD5 hash.
+	* Used when the hash of the Wadentry is about to change, giving
+	* the new hash to use for file names. newHash should not match any
+	* existing wad entries.
+	*/
+	void renameFiles(WadEntry* wad, string newHash);
+
 
 	//************************ Wads&Maps in-memory public ************************
 

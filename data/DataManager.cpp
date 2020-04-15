@@ -1992,6 +1992,41 @@ void DataManager::deleteWadFiles(WadEntry* wad)
 	}
 }
 
+void DataManager::renameFiles(WadEntry* wad, string newHash)
+{
+	wxString oldPath = getTextFolder()+wxFILE_SEP_PATH+wad->getMd5String()+".txt";
+	wxString newPath;
+	if (wxFileExists(oldPath)) {
+		newPath = getTextFolder()+wxFILE_SEP_PATH+newHash+".txt";
+		if (wxRenameFile(oldPath, newPath, false))
+			wxLogVerbose("Renamed text file for new wad hash %s", newHash);
+		else
+			wxLogVerbose("Failed to rename text file to new hash %s", newHash);
+	}
+	wxString imgFolder = getMapImgFolder();
+	wxString scrFolder = getScreenshotFolder();
+	for (int i=0; i<wad->numberOfMaps; i++) {
+		wxString filename = wad->mapPointers.at(i)->fileName();
+		wxString newname = wxString(newHash).Append("_").Append(wad->mapPointers.at(i)->name);
+		oldPath = imgFolder+wxFILE_SEP_PATH+filename+".png";
+		if (wxFileExists(oldPath)) {
+			newPath = imgFolder+wxFILE_SEP_PATH+newname+".png";
+			if (wxRenameFile(oldPath, newPath, false))
+				wxLogVerbose("Renamed map image file to %s", newname);
+			else
+				wxLogVerbose("Failed to rename map image file to %s", newname);
+		}
+		oldPath = scrFolder+wxFILE_SEP_PATH+filename+".png";
+		if (wxFileExists(oldPath)) {
+			newPath = scrFolder+wxFILE_SEP_PATH+newname+".png";
+			if (wxRenameFile(oldPath, newPath, false))
+				wxLogVerbose("Renamed screenshot file to %s", newname);
+			else
+				wxLogVerbose("Failed to rename screenshot file to %s", newname);
+		}
+	}
+}
+
 //*********************************************************************
 //************************ Wads&Maps in-memory ************************
 //*********************************************************************
