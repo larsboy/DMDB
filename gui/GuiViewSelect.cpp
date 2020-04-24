@@ -283,6 +283,7 @@ bool GuiViewSelect::onDragDropped(wxCoord x, wxCoord y, const wxString &data)
 		}
 	}
 	delete rest;
+	if (result) dataBase->dataFilterModified();
 	return result;
 }
 

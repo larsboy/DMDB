@@ -330,7 +330,7 @@ authorTextDir(0), authorTextFile(NULL), authorTextIndex(-1), authorText(""),
 tagLength(DEFAULT_TAG_LENGTH), tagMaster(), tagList(NULL),
 wadMaster(), nextWadId(1), wadMod(false), wadOwnMod(false), firstNewWad(-1), wadList(NULL),
 mapMaster(), nextMapId(1), mapMod(false), mapOwnMod(false), firstNewMap(-1), mapList(NULL),
-wadText(NULL), wadTitleFilter(NULL)
+wadText(NULL), dataViewMod(false), wadTitleFilter(NULL)
 {
 	listener = l;
 	authorNamingScheme = getAuthorNameFirstLast;
@@ -2660,6 +2660,7 @@ ListWrapper<WadEntry*>* DataManager::getWadTitleList(wxString filterStr, ListWra
 
 void DataManager::saveDataFilters()
 {
+	//TODO: Only if dataViewMod
 	wxLogVerbose("Writing data filters to file %s", FILE_VIEWS);
 	wxFileOutputStream file(dbFolder+wxFILE_SEP_PATH+FILE_VIEWS);
 	if (!file.IsOk()) throw GuiError("Couldn't open file.", FILE_VIEWS);
@@ -2676,6 +2677,7 @@ void DataManager::saveDataFilters()
 	}
 	delete buf;
 	file.Close();
+	dataViewMod = false;
 }
 
 void DataManager::writeDataFilter(wxOutputStream* file, DataFilter* filter)
@@ -2772,6 +2774,7 @@ bool DataManager::loadDataFilters()
 	}
 	wadLists->sort(filter_comp);
 	mapLists->sort(filter_comp);
+	dataViewMod = false;
 	//wxLogVerbose("Finished reading %i map entries", index);
 	delete file;
 	return true;
@@ -2781,14 +2784,18 @@ void DataManager::addDataFilter(DataFilter* dataFilter)
 {
 	if (dataFilter->type == FILTER_WAD_LIST) {
 		DataListFilter* dlv = dynamic_cast<DataListFilter*>(dataFilter);
-		if (dlv != NULL)
+		if (dlv != NULL) {
 			wadLists->push_back(dlv);
 			//wadLists->sort(filter_comp);
+			dataViewMod = true;
+		}
 	} else if (dataFilter->type == FILTER_MAP_LIST) {
 		DataListFilter* dlv = dynamic_cast<DataListFilter*>(dataFilter);
-		if (dlv != NULL)
+		if (dlv != NULL) {
 			mapLists->push_back(dlv);
 			//mapLists->sort(filter_comp);
+			dataViewMod = true;
+		}
 	}
 }
 
@@ -2801,22 +2808,25 @@ void DataManager::removeDataFilter(DataFilter* dataFilter)
 		DataListFilter* dlv = dynamic_cast<DataListFilter*>(dataFilter);
 		mapLists->remove(dlv);
 	}
+	dataViewMod = true;
 }
 
 bool DataManager::removeFromListFilter(int type, long index)
 {
+	bool result = false;
 	if (type==0 && currentWadFilter->filters[0]->type==FILTER_WAD_LIST) {
 		WadEntry* we = getWad(index);
 		if (we==NULL) return false;
 		DataListFilter* dlv = dynamic_cast<DataListFilter*>(currentWadFilter->filters[0]);
-		return dlv->removeEntry(we->dbid);
+		result = dlv->removeEntry(we->dbid);
 	} else if (type==1 && currentMapFilter->filters[0]->type==FILTER_MAP_LIST) {
 		MapEntry* me = getMap(index);
 		if (me==NULL) return false;
 		DataListFilter* dlv = dynamic_cast<DataListFilter*>(currentMapFilter->filters[0]);
-		return dlv->removeEntry(me->dbid);
+		result = dlv->removeEntry(me->dbid);
 	}
-	return false;
+	if (result) dataViewMod = true;
+	return result;
 }
 
 bool DataManager::removeWadFromFilters(uint32_t dbid)
@@ -2826,6 +2836,7 @@ bool DataManager::removeWadFromFilters(uint32_t dbid)
 		if ((*it)->removeEntry(dbid))
 			changed = true;
 	}
+	if (changed) dataViewMod = true;
 	return changed;
 }
 
@@ -2836,6 +2847,7 @@ bool DataManager::removeMapFromFilters(uint32_t dbid)
 		if ((*it)->removeEntry(dbid))
 			changed = true;
 	}
+	if (changed) dataViewMod = true;
 	return changed;
 }
 

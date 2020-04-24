@@ -250,7 +250,8 @@ void GuiFrame::closeDatabase()
 	mapList->saveListFields();
 	mapList->setDataManager(NULL);
 
-	dataBase->saveDataFilters();
+	if (dataBase->unsavedDataFilters())
+		dataBase->saveDataFilters();
 	if (dataBase->unsavedWadMapChanges()) //own stuff in panels
 		dataBase->saveWadsMaps();
 	appSettings->setValue(UI_WADSORT, dataBase->getWadFilter()->sortField);

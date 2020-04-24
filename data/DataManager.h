@@ -856,6 +856,16 @@ class DataManager
 	*/
 	list<DataListFilter*>* getMapLists() { return mapLists; }
 
+	/*!
+	* Call if one of the DataListFilters are modified.
+	*/
+	void dataFilterModified() { dataViewMod = true; }
+
+	/*!
+	* Returns true if there are unsaved changes to DataListFilters.
+	*/
+	bool unsavedDataFilters() { return dataViewMod; }
+
 
 	//************************ Statistics public ************************
 
@@ -1045,6 +1055,7 @@ class DataManager
 	// DataViews
 	list<DataListFilter*>* wadLists;
 	list<DataListFilter*>* mapLists;
+	bool dataViewMod; //Unsaved changes to wadLists or mapLists
 	ComboDataFilter* currentWadFilter; //main filter + search filter
 	ComboDataFilter* currentMapFilter; //main filter + search filter
 
