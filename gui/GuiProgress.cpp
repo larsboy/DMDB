@@ -61,6 +61,7 @@ void GuiProgress::logLine(wxString line)
 	if (logView != NULL) {
 		logView->WriteText(line);
 		logView->Newline();
+		logView->ShowPosition(logView->GetInsertionPoint());
 	}
 }
 

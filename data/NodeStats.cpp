@@ -167,7 +167,7 @@ bool NodeStats::checkNodes()
 			if (index < minIndex) minIndex=index;
 			if (index > maxIndex) maxIndex=index;
 			if (index >= ssect)
-				wxLogVerbose("Node Subsector index out of bounds!");
+				wxLogVerbose("Node right Subsector index out of bounds, is %i!", index);
 		} else {
 			ncount++;
 			if (index >= nodes)
@@ -179,7 +179,7 @@ bool NodeStats::checkNodes()
 			if (index < minIndex) minIndex=index;
 			if (index > maxIndex) maxIndex=index;
 			if (index >= ssect)
-				wxLogVerbose("Node Subsector index out of bounds!");
+				wxLogVerbose("Node left Subsector index out of bounds, is %i!", index);
 		} else {
 			ncount++;
 			if (index >= nodes)
@@ -341,6 +341,10 @@ void NodeStats::recursiveBuildSubsectorPoly(int nodeIndex, vector<Split*>* split
 
 void NodeStats::buildSubsectorPoly(int ss, vector<Split*>* nodesplits)
 {
+	if (ss >= ssectors->size()) {
+		invalids++;
+		return;
+	}
 	int16_t MIN = -32768;
 	int16_t MAX = 32767;
 

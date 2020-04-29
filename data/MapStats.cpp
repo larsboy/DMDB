@@ -158,12 +158,18 @@ void MapStats::readFile(wxInputStream* file, vector<DirEntry*>* lumps, map<int, 
 	}
 
 	if (nodeStats != NULL) {
-		nodeStats->progress = progress;
-		nodeStats->readFile(file,lumps);
-		Vector2D minXY((double)minCorner.x - 1.0, (double)minCorner.y - 1.0);
-		Vector2D maxXY((double)maxCorner.x + 1.0, (double)maxCorner.y + 1.0);
-		bool ok = nodeStats->checkNodes();
-		if (ok) area = nodeStats->computeArea(minXY, maxXY);
+		try {
+			nodeStats->progress = progress;
+			nodeStats->readFile(file,lumps);
+			Vector2D minXY((double)minCorner.x - 1.0, (double)minCorner.y - 1.0);
+			Vector2D maxXY((double)maxCorner.x + 1.0, (double)maxCorner.y + 1.0);
+			bool ok = nodeStats->checkNodes();
+			if (ok) area = nodeStats->computeArea(minXY, maxXY);
+		} catch (...) {
+			wxLogVerbose("Failed processing node data");
+			progress->warnError("Invalid node data");
+		}
+
 	} else {
 		wxLogVerbose("No nodes found, no area calculation");
 	}
