@@ -75,8 +75,10 @@ vertices(NULL), lineVertices(0), minCorner(), maxCorner(), lines(NULL),
 lineLength(0), sectors(0), secrets(0), lightSum(0.0), area(0.0), textures(NULL),
 nodeStats(NULL), reject(false), blockmap(false)
 {
+	for (int i=0; i<THING_END; i++)
+		thingCounts[i] = 0;
 	for (int i=0; i<3; i++)
-		thingStats[i] = NULL;
+		thingStats[i] = new ThingStats();
 }
 
 MapStats::~MapStats()
@@ -328,10 +330,6 @@ bool MapStats::hasGLNodes()
 
 void MapStats::processThings(wxInputStream* file, int32_t lsize, map<int, ThingDef*>* thingDefs)
 {
-	for (int i=0; i<THING_END; i++)
-		thingCounts[i] = 0;
-	for (int i=0; i<3; i++)
-		thingStats[i] = new ThingStats();
 	int num = lsize/10;
 	wxLogVerbose("Processing THINGS - %i entries", num);
 	uint16_t type;

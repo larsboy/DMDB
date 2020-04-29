@@ -48,10 +48,6 @@ void UdmfMapStats::readFile(wxInputStream* file, vector<DirEntry*>* lumps, map<i
 
 void UdmfMapStats::processTextmap(wxInputStream* file, int32_t lsize)
 {
-	for (int i=0; i<THING_END; i++)
-		thingCounts[i] = 0;
-	for (int i=0; i<3; i++)
-		thingStats[i] = new ThingStats();
 	vertices = new vector<Vertex>();
 	minCorner.x = 32767;
 	minCorner.y = 32767;

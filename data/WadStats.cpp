@@ -1301,13 +1301,18 @@ void WadStats::validateMaps()
 	WadContentX* last = NULL;
 	bool valid;
 	while (wcx != NULL) {
-		valid=true;
+		valid=false;
 		//First lump is marker (name), must have at least one more lump
 		if (wcx->lumps->size()<2) {
-			valid=false;
 			lumpError("Unknown marker lump", new DirEntry(wcx->lumps->at(0)->name));
+		} else { //Check for needed lumps
+			if (wcx->containsLump("VERTEXES") && wcx->containsLump("LINEDEFS") && wcx->containsLump("SIDEDEFS") && wcx->containsLump("SECTORS"))
+				valid=true;
+			else if (wcx->containsLump("TEXTMAP"))
+				valid=true;
+			else
+				lumpError("Map marker lump lacking map lumps", new DirEntry(wcx->lumps->at(0)->name));
 		}
-		//TODO: Check for needed lumps
 		if (!valid) {
 			//Remove invalid map entry
 			if (last==NULL)

@@ -12,10 +12,6 @@ HexenMapStats::~HexenMapStats()
 
 void HexenMapStats::processThings(wxInputStream* file, int32_t lsize, map<int, ThingDef*>* thingDefs)
 {
-	for (int i=0; i<THING_END; i++)
-		thingCounts[i] = 0;
-	for (int i=0; i<3; i++)
-		thingStats[i] = new ThingStats();
 	int num = lsize/20;
 	wxLogVerbose("Processing THINGS - %i entries", num);
 	uint16_t type;
