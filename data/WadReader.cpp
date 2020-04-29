@@ -119,6 +119,9 @@ void WadReader::processWads(TaskProgress* tp)
 		ws = processWad(mainFile.GetFullPath(), !mainFile.GetExt().IsSameAs("wad", false), tp);
 		if (ws != NULL) wadStatList->push_back(ws);
 		if (tp->hasFailed()) return;
+	} else if (archive->numberOfWads() == 0) {
+		tp->fatalError("No wad/pk3 in archive");
+		return;
 	} else {
 		wxString mainName = mainFile.GetName();
 		int maxPri = 0;
