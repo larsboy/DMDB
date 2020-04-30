@@ -842,9 +842,16 @@ void WadStats::processLump(DirEntry* lump, wxInputStream* file)
 	wxString lname(lump->name);
 	lname.MakeUpper();
 	if (currentMap != NULL) {
-		if (lname.IsSameAs("THINGS") || lname.IsSameAs("LINEDEFS") || lname.IsSameAs("SIDEDEFS")
-			|| lname.IsSameAs("VERTEXES") || lname.IsSameAs("SEGS") || lname.IsSameAs("SSECTORS")
-			|| lname.IsSameAs("NODES") || lname.IsSameAs("SECTORS") || lname.IsSameAs("REJECT") || lname.IsSameAs("BLOCKMAP"))
+		if (lname.IsSameAs("LINEDEFS") || lname.IsSameAs("SIDEDEFS") || lname.IsSameAs("VERTEXES") || lname.IsSameAs("SECTORS"))
+		{
+			if (lump->size < 4)
+				lumpError("Empty map lump", lump);
+			else
+				currentMap->addLump(lump);
+			return;
+		}
+		if (lname.IsSameAs("THINGS") || lname.IsSameAs("SEGS") || lname.IsSameAs("SSECTORS")
+			|| lname.IsSameAs("NODES") || lname.IsSameAs("REJECT") || lname.IsSameAs("BLOCKMAP"))
 		{
 			currentMap->addLump(lump);
 			return;

@@ -23,6 +23,7 @@
 #include <wx/filefn.h>
 #include "../TextReport.h"
 #include "../gui/GuiBase.h"
+#include "TaskProgress.h"
 
 /*!
 * Represents the archive file, and gives access to the content.
@@ -76,7 +77,7 @@ class WadArchive
 	* numberOfWads(). The full path of the extracted file is
 	* returned.
 	*/
-	wxString extractWad(int index);
+	wxString extractWad(int index, TaskProgress* tp);
 
 	/*!
 	* Extract a txt file to tempFolder. The argument is the
@@ -84,7 +85,7 @@ class WadArchive
 	* numberOfTxts(). The full path of the extracted file is
 	* returned.
 	*/
-	wxString extractTxt(int index);
+	wxString extractTxt(int index, TaskProgress* tp);
 
 	/*!
 	* Extract a Dehacked file (*.deh) to tempFolder, if such
@@ -93,7 +94,7 @@ class WadArchive
 	* is found. Note that if there are multiple Dehacked files,
 	* this will simply extract the first it happens to find.
 	*/
-	wxString extractDehacked();
+	wxString extractDehacked(TaskProgress* tp);
 
 	/*!
 	* Delete any files extracted to the tempFolder by this
@@ -112,7 +113,7 @@ class WadArchive
 		vector<wxFileName>* otherFiles; //Other files in archive
 		vector<wxString>* extracted; //Files extracted to tempFolder
 
-		wxString extractFile(wxString file);
+		wxString extractFile(wxString file, TaskProgress* tp);
 };
 
 #endif // WADARCHIVE_H

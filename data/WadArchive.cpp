@@ -25,7 +25,9 @@ void WadArchive::readArchiveFiles()
 	while (entry != NULL) {
 		wxFileName pathName = wxFileName(entry->GetName());
 		wxString ext = pathName.GetExt();
-		if ((ext.CmpNoCase("wad")==0) || (ext.CmpNoCase("pk3")==0)) {
+		if (ext.CmpNoCase("zip")==0) {
+			//TODO: Extract zip
+		} else if ((ext.CmpNoCase("wad")==0) || (ext.CmpNoCase("pk3")==0)) {
 			wadFiles->push_back(pathName);
 			wxLogVerbose("Try to get file timestamp");
 			wxDateTime dt = entry->GetDateTime();
@@ -54,7 +56,7 @@ void WadArchive::printReport(TextReport* reportView)
 		reportView->writeLine(otherFiles->at(i).GetFullPath());
 }
 
-wxString WadArchive::extractFile(wxString file)
+wxString WadArchive::extractFile(wxString file, TaskProgress* tp)
 {
 	wxFFileInputStream in(fileName);
 	wxZipInputStream zip(in);
@@ -65,19 +67,35 @@ wxString WadArchive::extractFile(wxString file)
 		entry = zip.GetNextEntry();
 	}
 	if (entry != NULL) {
-		wxFileName tempName(tempPath+wxFILE_SEP_PATH+entry->GetName());
-		if (!tempName.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
+		int met = entry->GetMethod();
+		if ((met!=wxZIP_METHOD_STORE) && (met!=wxZIP_METHOD_DEFLATE)) {
+			tp->fatalError("Unsupported compression method");
 			delete entry;
-			throw new GuiError("Can't extract file", entry->GetName());
+			return "";
+		}
+		wxString ename = entry->GetName();
+		//There have been cases of wads with name starting with #,
+		//and wxWidgets fails to handle these file names.
+		if (ename.Find("#") !=  wxNOT_FOUND) {
+			tp->fatalError("Illegal file name with #");
+			delete entry;
+			return "";
+		}
+		wxFileName tempName(tempPath+wxFILE_SEP_PATH+ename);
+		if (!tempName.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL)) {
+			tp->fatalError(wxString::Format("Failed to mkdir %s",tempName.GetFullPath()));
+			delete entry;
+			return "";
 		}
 		wxFileOutputStream file(tempName.GetFullPath());
 		if (!file) {
+			tp->fatalError(wxString::Format("Can't extract file %s",tempName.GetFullPath()));
 			delete entry;
-			throw new GuiError("Can't extract file", tempName.GetFullPath());
+			return "";
 		}
         zip.Read(file);
         file.Close();
-        wxLogVerbose("Extracted file %s", entry->GetName());
+        wxLogVerbose("Extracted file %s", ename);
 		delete entry;
 		extracted->push_back(tempName.GetFullPath());
 		return tempName.GetFullPath();
@@ -86,21 +104,21 @@ wxString WadArchive::extractFile(wxString file)
 	}
 }
 
-wxString WadArchive::extractWad(int index)
+wxString WadArchive::extractWad(int index, TaskProgress* tp)
 {
-	return extractFile(wadFiles->at(index).GetFullPath());
+	return extractFile(wadFiles->at(index).GetFullPath(), tp);
 }
 
-wxString WadArchive::extractTxt(int index)
+wxString WadArchive::extractTxt(int index, TaskProgress* tp)
 {
-	return extractFile(txtFiles->at(index).GetFullPath());
+	return extractFile(txtFiles->at(index).GetFullPath(), tp);
 }
 
-wxString WadArchive::extractDehacked()
+wxString WadArchive::extractDehacked(TaskProgress* tp)
 {
 	for (int i=0; i<otherFiles->size(); i++) {
 		if (otherFiles->at(i).GetExt().CmpNoCase("deh")==0)
-			return extractFile(otherFiles->at(i).GetFullPath());
+			return extractFile(otherFiles->at(i).GetFullPath(), tp);
 	}
 	return "";
 }

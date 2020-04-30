@@ -127,29 +127,25 @@ void WadReader::processWads(TaskProgress* tp)
 		int maxPri = 0;
 		int maxPriIndex = 0;
 		for (int i=0; i<archive->numberOfWads(); i++) {
-			try {
-				wxString fileName = archive->extractWad(i);
-				if (fileName.Length() > 0) {
-					wxFileName fn = wxFileName(fileName);
-					wxLogVerbose("Processing file of type %s", fn.GetExt());
-					TaskProgress* sub = new TaskProgress(wxString::Format("Analysing contents of %s",fn.GetFullName()), tp);
-					ws = processWad(fileName, !fn.GetExt().IsSameAs("wad", false), sub);
-					if (ws != NULL) wadStatList->push_back(ws);
-					bool failed = sub->hasFailed(true);
-					delete sub;
-					if (failed) return;
-					ws->year = archive->getWadYear();
-					if (mainName.IsSameAs(fn.GetName(), false))
-						ws->priority++;
-					if (ws->priority > maxPri) {
-						maxPri = ws->priority;
-						maxPriIndex = i;
-					}
+			wxString fileName = archive->extractWad(i,tp);
+			//TODO: Can save archive in "failed" folder
+			if (tp->hasFailed()) return;
+			if (fileName.Length() > 0) {
+				wxFileName fn = wxFileName(fileName);
+				wxLogVerbose("Processing file of type %s", fn.GetExt());
+				TaskProgress* sub = new TaskProgress(wxString::Format("Analysing contents of %s",fn.GetFullName()), tp);
+				ws = processWad(fileName, !fn.GetExt().IsSameAs("wad", false), sub);
+				if (ws != NULL) wadStatList->push_back(ws);
+				bool failed = sub->hasFailed(true);
+				delete sub;
+				if (failed) return;
+				ws->year = archive->getWadYear();
+				if (mainName.IsSameAs(fn.GetName(), false))
+					ws->priority++;
+				if (ws->priority > maxPri) {
+					maxPri = ws->priority;
+					maxPriIndex = i;
 				}
-			} catch (GuiError e) {
-				//archive->extractWad failed
-				tp->fatalError("Failed to extract file from archive");
-				return;
 			}
 		}
 		//Main wad must be first in vector
@@ -217,7 +213,7 @@ void WadReader::findThingDefs(TaskProgress* tp)
 
 	//Check for Dehacked file
 	if (dehacked==NULL && archive!=NULL) {
-		wxString dehFile = archive->extractDehacked();
+		wxString dehFile = archive->extractDehacked(sub);
 		if (dehFile.Length()>0)
 			dehacked = processDeh(dehFile, sub);
 	}
@@ -804,19 +800,23 @@ void WadReader::setWadFlags(WadEntry* wadEntry, WadStats* wadStats)
 void WadReader::storeMapImage(MapStats* mapStats, wxString& fileName)
 {
 	int width = (mapStats->getEndCorner().x - mapStats->getStartCorner().x)/DRAW_SCALE;
-	width+=3;
 	int height = (mapStats->getEndCorner().y - mapStats->getStartCorner().y)/DRAW_SCALE;
-	height+=3;
-	wxLogVerbose("Drawing map PNG of %i x %i pixels", width, height);
-	wxBitmap bm(width, height, wxBITMAP_SCREEN_DEPTH);
-	wxMemoryDC temp_dc(bm);
-	drawMap(mapStats, temp_dc);
-	temp_dc.SelectObject(wxNullBitmap);
-	bool ok = bm.SaveFile(fileName, wxBITMAP_TYPE_PNG);
-	if (ok)
-		wxLogVerbose("Map PNG saved to file");
-	else
-		wxLogVerbose("Failed saving map PNG to file");
+	if (width<=0 || height<=0) {
+		wxLogVerbose("Can't draw map - invalid dimensions %i x %i pixels", width, height);
+	} else {
+		width+=3;
+		height+=3;
+		wxLogVerbose("Drawing map PNG of %i x %i pixels", width, height);
+		wxBitmap bm(width, height, wxBITMAP_SCREEN_DEPTH);
+		wxMemoryDC temp_dc(bm);
+		drawMap(mapStats, temp_dc);
+		temp_dc.SelectObject(wxNullBitmap);
+		bool ok = bm.SaveFile(fileName, wxBITMAP_TYPE_PNG);
+		if (ok)
+			wxLogVerbose("Map PNG saved to file");
+		else
+			wxLogVerbose("Failed saving map PNG to file");
+	}
 }
 
 void WadReader::drawMap(MapStats* mapStats, wxDC& dc)
