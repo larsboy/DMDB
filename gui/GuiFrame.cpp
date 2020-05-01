@@ -485,7 +485,7 @@ void GuiFrame::onFolderRead(wxCommandEvent& event)
 		fname = wxFileName((*files)[i]);
 		//wxLogVerbose("Process file %s", (*files)[i]);
 		TaskProgress* fileProg = new TaskProgress(fname.GetFullName(), progress);
-		wadReader->initReader((*files)[i]);
+		wadReader->initReader((*files)[i], fileProg);
 		wadReader->processWads(fileProg); //Creates WadStats for each wad/pk3, best-guess iwad and engine
 		if (!fileProg->hasFailed()) {
 			if (iwad != IWAD_NONE)
@@ -551,16 +551,20 @@ void GuiFrame::onFileRead(wxCommandEvent& event)
 		"Content files (zip/wad/pk3)|*.zip;*.wad;*.pk3|Zip files (*.zip)|*.zip|Wad files (*.wad)|*.wad|Pk3 files (*.pk3)|*.pk3|All files (*.*)|*.*",
 		wxFD_OPEN|wxFD_FILE_MUST_EXIST|wxFD_CHANGE_DIR);
     fdlg->SetFilterIndex(appSettings->getValue(UI_FILETYPE));
+    WadProgress* progress;
 	if (fdlg->ShowModal() == wxID_OK) {
         appSettings->setValue(UI_FILETYPE, fdlg->GetFilterIndex());
-		wadReader->initReader(fdlg->GetPath());
+        progress = new WadProgress("");
+		wadReader->initReader(fdlg->GetPath(), progress);
+		//Don't care if this fails
+		delete progress;
 		fdlg->Destroy();
 	} else {
 		fdlg->Destroy();
 		return; //No file selected
 	}
 	//Parse wadStats from file
-	WadProgress* progress = new WadProgress("Process file");
+	progress = new WadProgress("Process file");
 	int result = BUTTON_CANCEL;
 	GuiProgress* progDialog = new GuiProgress(this, getDialogPos(320,300));
 	progDialog->Show();

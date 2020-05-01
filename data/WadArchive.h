@@ -26,14 +26,29 @@
 #include "TaskProgress.h"
 
 /*!
-* Represents the archive file, and gives access to the content.
-* It is created with the path of the archive file, as well as a
-* folder to hold extracted files. Call readArchiveFiles to read
-* the archive, numberOf-functions to get the number of files
-* found in the archive of different types, and extract-methods
-* to extract the files to the tempFolder. The extracted files
-* can then be processed by other classes. Be sure to call
-* deleteExtracted when done with the files, to delete them.
+* Represents one relevant file found inside an archive file.
+*/
+struct ArchivedFile
+{
+	wxString archive; //!< File path and name of archive file
+	wxFileName file; //!< Name of file contained in the archive
+
+	ArchivedFile(const wxString& arch, const wxFileName& fn) : archive(arch), file(fn) {}
+
+	/*! Returns true if the archived file has the given extension. */
+	bool hasType(const wxString& ext) { return (file.GetExt().CmpNoCase(ext) == 0); }
+};
+
+/*!
+* Represents the archive file, and gives access to the content. It is
+* created with the path of the archive file, as well as a folder to
+* hold extracted files. Call readArchiveFiles to read the archive,
+* numberOf-functions to get the number of files found in the archive
+* of different types, and extract-methods to extract the files to the
+* tempFolder. The extracted files can then be processed by other classes.
+* WadArchive can handle nested archives, finding the relevant files in
+* internal archives as well. Be sure to call deleteExtracted when done
+* with the files, to delete them.
 */
 class WadArchive
 {
@@ -42,12 +57,14 @@ class WadArchive
 	virtual ~WadArchive();
 
 	/*!
-	* Reads through the archive, getting the name of each file
-	* within. Files are categorized as wad, pk3, txt and other.
-	* Get the number of each type with the numberOf-methods,
-	* and extract specific files with the extract-methods.
+	* Reads through the archive, getting the name of relevant files
+	* within. If the archive contains nested archives (zip, not pk3),
+	* these will be extracted and read through, to find relevant files
+	* in nested archives (this can fail). Relevant files are categorized
+	* as wad/pk3, txt and other. Get the number of each type with the
+	* numberOf-methods, and extract specific files with the extract-methods.
 	*/
-	void readArchiveFiles();
+	void readArchiveFiles(TaskProgress* tp);
 
 	/*! Number of wad or pk3 files in the archive. */
 	int numberOfWads() { return wadFiles->size(); }
@@ -105,15 +122,17 @@ class WadArchive
 	protected:
 
 	private:
-		wxString fileName; //Path/name of zip file
+		void readArchive(wxString file, TaskProgress* tp);
+		wxString extractFile(wxZipInputStream* zip, wxZipEntry* entry, TaskProgress* tp);
+		wxString extractFile(ArchivedFile* af, TaskProgress* tp);
+
+		wxString fileName; //Path/name of main zip file
 		wxString tempPath; //To extract files, delete later
 		int year; //Wad/pk3 file year
-		vector<wxFileName>* wadFiles; //Wad/pk3 files in archive
-		vector<wxFileName>* txtFiles; //Txt files in archive
-		vector<wxFileName>* otherFiles; //Other files in archive
+		vector<ArchivedFile*>* wadFiles; //Wad/pk3 files found in archives
+		vector<ArchivedFile*>* txtFiles; //Txt files found in archives
+		vector<ArchivedFile*>* otherFiles; //Other files found in archives
 		vector<wxString>* extracted; //Files extracted to tempFolder
-
-		wxString extractFile(wxString file, TaskProgress* tp);
 };
 
 #endif // WADARCHIVE_H

@@ -153,7 +153,7 @@ class WadReader
 	* the main resource file itself, or a zip-file containing
 	* the main and other resource files.
 	*/
-	void initReader(wxString file);
+	void initReader(wxString file, TaskProgress* tp);
 
 	/*!
 	* true if the file set with initReader is a zip.

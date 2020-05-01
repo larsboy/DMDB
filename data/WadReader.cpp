@@ -101,14 +101,14 @@ void WadReader::clearState()
 	}
 }
 
-void WadReader::initReader(wxString file)
+void WadReader::initReader(wxString file, TaskProgress* tp)
 {
 	clearState();
 	mainFile = wxFileName(file);
 	wadStatList = new vector<WadStats*>();
 	if (mainFile.GetExt().CmpNoCase("zip") == 0) {
 		archive = new WadArchive(mainFile.GetFullPath(), tempFolder);
-		archive->readArchiveFiles();
+		archive->readArchiveFiles(tp);
 	}
 }
 
