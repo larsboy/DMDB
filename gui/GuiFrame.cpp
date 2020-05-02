@@ -163,6 +163,7 @@ wadPanel(NULL), mapPanel(NULL), consoleText(NULL), editMode(false)
 	aspects->mapStats = configObject->ReadBool("mapStats", true);
 	aspects->gameStats = configObject->ReadBool("gameStats", true);
 	aspects->mapImages = configObject->ReadBool("mapImages", true);
+	aspects->copyFailedFiles = configObject->ReadBool("copyFailedFiles", false);
 	configObject->SetPath("..");
 	wadReader->setAspects(aspects);
 
@@ -220,6 +221,7 @@ void GuiFrame::setDatabase(const wxString& folder)
 	toolbarMan->enableItems(dataBase != NULL);
 
 	wadReader->setTempFolder(dataBase->getTempFolder());
+	wadReader->setFailedFolder(dataBase->getFailedFolder());
 	dataBase->load();
 	if (wadPanel != NULL)
 		wadPanel->setDataManager(dataBase);
@@ -1293,6 +1295,7 @@ void GuiFrame::onClose(wxCloseEvent& event)
 		configObject->Write("mapStats", aspects->mapStats);
 		configObject->Write("gameStats", aspects->gameStats);
 		configObject->Write("mapImages", aspects->mapImages);
+		configObject->Write("copyFailedFiles", aspects->copyFailedFiles);
 		configObject->SetPath("..");
 		//Do cleanup?
 		Destroy();

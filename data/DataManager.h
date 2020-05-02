@@ -311,6 +311,11 @@ class DataManager
 	wxString getTempFolder() { return dbFolder+wxFILE_SEP_PATH+"temp"; }
 
 	/*!
+	* Folder for storing files we couldn't process correctly.
+	*/
+	wxString getFailedFolder() { return dbFolder+wxFILE_SEP_PATH+"failed"; }
+
+	/*!
 	* Performs the necessary loading of persisted resources
 	* into memory. This will typically be the full set of core
 	* objects.

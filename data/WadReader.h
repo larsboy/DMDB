@@ -62,7 +62,14 @@ struct WadStatAspects
 	bool gameStats; //!< Gameplay stats (hp, ratios)
 	bool mapImages; //!< Create map drawing
 
-	/*! Created with all fields true. */
+	/*!
+	* If the application is unable to process a content file when
+	* creating the DB entries, we can save a copy of the file in
+	* the DB 'failed' folder.
+	*/
+	bool copyFailedFiles;
+
+	/*! Created with all fields true, except copyFailedFiles. */
 	WadStatAspects();
 
 	/*! true if any MapEntry aspect is true. */
@@ -141,6 +148,11 @@ class WadReader
 	* are deleted on completion).
 	*/
 	void setTempFolder(wxString folder);
+
+	/*!
+	* Folder to put files we were not able to process.
+	*/
+	void setFailedFolder(wxString folder);
 
 	/*!
 	* Deletes any file processing results.
@@ -364,6 +376,7 @@ class WadReader
 
 	wxFileSystem* fileSystem; //Used to get wxFSFile objects for files, to get date
 	wxString tempFolder; //Temporary file storage
+	wxString failedFolder; //For files we can't process
 	wxString thingFiles[5]; //Files to load ThingDefs
 
 	int thingType; //Current ThingDef type: 0=None/custom, 1=Doom, 2=ZDoom, ...

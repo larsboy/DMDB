@@ -6,7 +6,7 @@
 
 WadStatAspects::WadStatAspects()
 : wadFile(true), wadFlags(true),
-mapMain(true), gameModes(true), mapStats(true), gameStats(true), mapImages(true)
+mapMain(true), gameModes(true), mapStats(true), gameStats(true), mapImages(true), copyFailedFiles(false)
 {}
 
 bool WadStatAspects::mapAspects()
@@ -53,6 +53,11 @@ void WadReader::setAspects(WadStatAspects* asp)
 void WadReader::setTempFolder(wxString folder)
 {
 	tempFolder = folder;
+}
+
+void WadReader::setFailedFolder(wxString folder)
+{
+	failedFolder = folder;
 }
 
 void WadReader::clearState()
@@ -128,8 +133,13 @@ void WadReader::processWads(TaskProgress* tp)
 		int maxPriIndex = 0;
 		for (int i=0; i<archive->numberOfWads(); i++) {
 			wxString fileName = archive->extractWad(i,tp);
-			//TODO: Can save archive in "failed" folder
-			if (tp->hasFailed()) return;
+			if (tp->hasFailed()) {
+				if (aspects->copyFailedFiles && mainFile.FileExists()) {
+					wxString dest = failedFolder+wxFILE_SEP_PATH+mainFile.GetFullName();
+					wxCopyFile(mainFile.GetFullPath(), dest);
+				}
+				return;
+			}
 			if (fileName.Length() > 0) {
 				wxFileName fn = wxFileName(fileName);
 				wxLogVerbose("Processing file of type %s", fn.GetExt());

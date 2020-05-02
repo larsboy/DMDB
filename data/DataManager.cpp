@@ -401,6 +401,8 @@ void DataManager::load()
 	textDirname.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 	wxFileName tempDirname(getTempFolder(), "");
 	tempDirname.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+	wxFileName failDirname(getFailedFolder(), "");
+	failDirname.Mkdir(wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 }
 
 

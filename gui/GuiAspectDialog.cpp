@@ -29,12 +29,15 @@ GuiAspectDialog::GuiAspectDialog(wxWindow* parent, const wxPoint& pos, WadStatAs
     checks[6] = new wxCheckBox(this, -1, "Create map drawings");
     mainSizer->Add(checks[6], 0, wxALL, 2);
 
+    mainSizer->AddSpacer(10);
+    checks[7] = new wxCheckBox(this, -1, "Store zips we can't extract in failed folder");
+    mainSizer->Add(checks[7], 0, wxALL, 2);
+
     if (repl) {
-		checks[7] = new wxCheckBox(this, -1, "Overwrite existing entries on matching MD5 hash");
-		mainSizer->AddSpacer(10);
-		mainSizer->Add(checks[7], 0, wxALL, 2);
+		checks[8] = new wxCheckBox(this, -1, "Overwrite existing entries on matching MD5 hash");
+		mainSizer->Add(checks[8], 0, wxALL, 2);
     } else {
-		checks[7] = NULL;
+		checks[8] = NULL;
     }
     topSizer->Add(mainSizer, 0, wxALL, 16);
 
@@ -68,8 +71,9 @@ void GuiAspectDialog::writeData()
     checks[4]->SetValue(aspects->mapStats);
     checks[5]->SetValue(aspects->gameStats);
     checks[6]->SetValue(aspects->mapImages);
-    if (checks[7] != NULL)
-		checks[7]->SetValue(replaceFlag);
+    checks[7]->SetValue(aspects->copyFailedFiles);
+    if (checks[8] != NULL)
+		checks[8]->SetValue(replaceFlag);
     TransferDataToWindow();
 }
 
@@ -83,8 +87,9 @@ void GuiAspectDialog::readData()
     aspects->mapStats = checks[4]->GetValue();
     aspects->gameStats = checks[5]->GetValue();
     aspects->mapImages = checks[6]->GetValue();
-    if (checks[7] != NULL)
-		replaceFlag = checks[7]->GetValue();
+    aspects->copyFailedFiles = checks[7]->GetValue();
+    if (checks[8] != NULL)
+		replaceFlag = checks[8]->GetValue();
 }
 
 //Event table:

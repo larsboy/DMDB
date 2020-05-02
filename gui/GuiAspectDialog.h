@@ -56,7 +56,7 @@ class GuiAspectDialog : public wxDialog
 
 		bool replaceFlag;
         WadStatAspects* aspects;
-        wxCheckBox* checks[8];
+        wxCheckBox* checks[9];
 
     DECLARE_EVENT_TABLE()
 };
