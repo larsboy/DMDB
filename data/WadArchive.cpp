@@ -45,7 +45,9 @@ void WadArchive::readArchive(wxString file, TaskProgress* tp)
 	while (entry != NULL) {
 		wxFileName pathName = wxFileName(entry->GetName());
 		wxString ext = pathName.GetExt();
-		if (ext.CmpNoCase("zip")==0) {
+		if (pathName.GetFullName().StartsWith("._")) {
+			//Skip
+		} else if (ext.CmpNoCase("zip")==0) {
 			wxString extrZip = extractFile(&zip, entry, tp);
 			if (extrZip.Length() > 0)
 				readArchive(extrZip, tp);

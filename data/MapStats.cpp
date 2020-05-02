@@ -169,7 +169,6 @@ void MapStats::readFile(wxInputStream* file, vector<DirEntry*>* lumps, map<int, 
 			wxLogVerbose("Failed processing node data");
 			progress->warnError("Invalid node data");
 		}
-
 	} else {
 		wxLogVerbose("No nodes found, no area calculation");
 	}

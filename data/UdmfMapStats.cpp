@@ -21,25 +21,36 @@ void UdmfMapStats::readFile(wxInputStream* file, vector<DirEntry*>* lumps, map<i
 	wxLogVerbose("Processing map %s with %i lumps", mapName, lumps->size());
 	progress->startCount(MAP_PROGRESS_STEPS);
 	DirEntry* lump;
-	for (int i=0; i<lumps->size(); i++) {
-		lump = lumps->at(i);
-		file->SeekI(lump->offset, wxFromStart);
-		wxString lname(lump->name);
-		if (lname.CmpNoCase("TEXTMAP")==0)
-			processTextmap(file, lump->size);
-		else if (lname.CmpNoCase("ZNODES")==0)
-			findGLNodeType(file, lump->size); //Creates nodeStats
-		else if (lname.CmpNoCase("REJECT")==0)
-			processReject(file, lump->size);
+	try {
+		for (int i=0; i<lumps->size(); i++) {
+			lump = lumps->at(i);
+			file->SeekI(lump->offset, wxFromStart);
+			wxString lname(lump->name);
+			if (lname.CmpNoCase("TEXTMAP")==0)
+				processTextmap(file, lump->size);
+			else if (lname.CmpNoCase("ZNODES")==0)
+				findGLNodeType(file, lump->size); //Creates nodeStats
+			else if (lname.CmpNoCase("REJECT")==0)
+				processReject(file, lump->size);
+		}
+	} catch (...) {
+		wxLogVerbose("Failed processing TEXTMAP data");
+		progress->fatalError("Failed processing TEXTMAP data");
+		return;
 	}
 
 	if (nodeStats != NULL) {
-		nodeStats->progress = progress;
-		nodeStats->readFile(file, lumps);
-		Vector2D minXY((double)minCorner.x - 1.0, (double)minCorner.y - 1.0);
-		Vector2D maxXY((double)maxCorner.x + 1.0, (double)maxCorner.y + 1.0);
-		bool ok = nodeStats->checkNodes();
-		if (ok) area = nodeStats->computeArea(minXY, maxXY);
+		try {
+			nodeStats->progress = progress;
+			nodeStats->readFile(file, lumps);
+			Vector2D minXY((double)minCorner.x - 1.0, (double)minCorner.y - 1.0);
+			Vector2D maxXY((double)maxCorner.x + 1.0, (double)maxCorner.y + 1.0);
+			bool ok = nodeStats->checkNodes();
+			if (ok) area = nodeStats->computeArea(minXY, maxXY);
+		} catch (...) {
+			wxLogVerbose("Failed processing node data");
+			progress->warnError("Invalid node data");
+		}
 	} else {
 		wxLogVerbose("No nodes found, no area calculation");
 	}
@@ -55,7 +66,6 @@ void UdmfMapStats::processTextmap(wxInputStream* file, int32_t lsize)
 	maxCorner.y = -32768;
 	lines = new vector<MapLine>();
 	textures = new map<string, int>();
-
 
 	char ch = 0;
 	//'\r' is carriage return, and '\n' is line feed.

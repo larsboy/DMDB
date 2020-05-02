@@ -441,11 +441,10 @@ void WadStats::mapMarker(DirEntry* lump)
 		//Map marker for GL nodes
 		name = lump->name.substr(3,string::npos);
 		lump->name = name;
+		if ((currentMap!=NULL) && (currentMap->lumps->at(0)->name.compare(name)==0))
+			return; //Same as current
 	}
 	wxLogVerbose("Start marker for map %s", name);
-	if ((currentMap!=NULL) && (currentMap->lumps->at(0)->name.compare(name)==0))
-		return; //Same as current
-
 	currentMap = new WadContentX(WMAP, filePathName);
 	currentMap->addLump(lump);
 	priority++;
@@ -886,6 +885,14 @@ void WadStats::processLump(DirEntry* lump, wxInputStream* file)
 			return;
 		}
 	} //end map lumps
+	if (lname.IsSameAs("LINEDEFS") || lname.IsSameAs("SIDEDEFS") || lname.IsSameAs("VERTEXES") || lname.IsSameAs("SECTORS")
+		|| lname.IsSameAs("THINGS") || lname.IsSameAs("SEGS") || lname.IsSameAs("SSECTORS") || lname.IsSameAs("NODES")
+		|| lname.IsSameAs("REJECT") || lname.IsSameAs("BLOCKMAP"))
+	{
+		lumpError("Map lump without map marker", lump);
+		return;
+	}
+
 	if (lump->size == 0) {
 		processMarkerLump(lump, lname);
 		return;
