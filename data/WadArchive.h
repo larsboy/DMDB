@@ -122,6 +122,7 @@ class WadArchive
 	protected:
 
 	private:
+		ArchivedFile* findWad(const wxFileName& file);
 		void readArchive(wxString file, TaskProgress* tp);
 		wxString extractFile(wxZipInputStream* zip, wxZipEntry* entry, TaskProgress* tp);
 		wxString extractFile(ArchivedFile* af, TaskProgress* tp);

@@ -23,6 +23,13 @@ WadArchive::~WadArchive()
 	delete extracted;
 }
 
+ArchivedFile* WadArchive::findWad(const wxFileName& file)
+{
+	for (int i=0; i<wadFiles->size(); i++)
+		if ((*wadFiles)[i]->file == file) return (*wadFiles)[i];
+	return NULL;
+}
+
 void WadArchive::readArchiveFiles(TaskProgress* tp)
 {
 	readArchive(fileName, tp);
@@ -43,11 +50,16 @@ void WadArchive::readArchive(wxString file, TaskProgress* tp)
 			if (extrZip.Length() > 0)
 				readArchive(extrZip, tp);
 		} else if ((ext.CmpNoCase("wad")==0) || (ext.CmpNoCase("pk3")==0)) {
-			wadFiles->push_back(new ArchivedFile(file, pathName));
-			wxLogVerbose("Try to get file timestamp");
-			wxDateTime dt = entry->GetDateTime();
-			if ((dt.IsValid()) && (dt.GetYear() > year))
-				year = dt.GetYear();
+			ArchivedFile* af = findWad(pathName);
+			if (af == NULL) {
+				wadFiles->push_back(new ArchivedFile(file, pathName));
+				wxLogVerbose("Try to get file timestamp");
+				wxDateTime dt = entry->GetDateTime();
+				if ((dt.IsValid()) && (dt.GetYear() > year))
+					year = dt.GetYear();
+			} else {
+				wxLogVerbose("Duplicate filename %s", pathName.GetFullPath());
+			}
 		} else if (ext.CmpNoCase("txt")==0) {
 			txtFiles->push_back(new ArchivedFile(file, pathName));
 		} else if (!entry->IsDir()) {
