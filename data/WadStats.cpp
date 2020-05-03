@@ -841,6 +841,10 @@ void WadStats::processLump(DirEntry* lump, wxInputStream* file)
 	wxString lname(lump->name);
 	lname.MakeUpper();
 	if (currentMap != NULL) {
+		if (currentMap->containsLump(lump->name)) {
+			lumpError("Duplicate map lump", lump);
+			return;
+		}
 		if (lname.IsSameAs("LINEDEFS") || lname.IsSameAs("SIDEDEFS") || lname.IsSameAs("VERTEXES") || lname.IsSameAs("SECTORS"))
 		{
 			if (lump->size < 4)
