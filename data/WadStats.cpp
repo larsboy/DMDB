@@ -891,7 +891,7 @@ void WadStats::processLump(DirEntry* lump, wxInputStream* file)
 	} //end map lumps
 	if (lname.IsSameAs("LINEDEFS") || lname.IsSameAs("SIDEDEFS") || lname.IsSameAs("VERTEXES") || lname.IsSameAs("SECTORS")
 		|| lname.IsSameAs("THINGS") || lname.IsSameAs("SEGS") || lname.IsSameAs("SSECTORS") || lname.IsSameAs("NODES")
-		|| lname.IsSameAs("REJECT") || lname.IsSameAs("BLOCKMAP"))
+		|| lname.IsSameAs("REJECT") || lname.IsSameAs("BLOCKMAP") || lname.IsSameAs("BEHAVIOR"))
 	{
 		lumpError("Map lump without map marker", lump);
 		return;
