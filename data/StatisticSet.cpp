@@ -88,12 +88,18 @@ YearStatSet::YearStatSet(wxString setName) : StatisticSet("Year", setName)
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }
@@ -144,12 +150,18 @@ IwadStatSet::IwadStatSet(wxString setName) : StatisticSet("Iwad", setName)
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }
@@ -200,12 +212,18 @@ EngineStatSet::EngineStatSet(wxString setName) : StatisticSet("Engine", setName)
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }
@@ -252,7 +270,7 @@ RatingStatSet::RatingStatSet(wxString setName) : StatisticSet("Own rating", setN
 	for (int i=0; i<=10; i++)
 		(*statMap)[i] = new MapStatistics(wxString::Format("%i",i));
 	(*statMap)[11] = new MapStatistics("No rating");
-	
+
 	addField(STS_END, 80);
 	addField(STS_COUNT, 50);
 	addField(STS_WF_IWAD, 50);
@@ -260,12 +278,18 @@ RatingStatSet::RatingStatSet(wxString setName) : StatisticSet("Own rating", setN
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 }
 
@@ -306,7 +330,7 @@ DifficultyStatSet::DifficultyStatSet(wxString setName) : StatisticSet("Difficult
 	(*statMap)[0] = new MapStatistics("Not rated");
 	for (int i=1; i<5; i++)
 		(*statMap)[i] = new MapStatistics(difficultyRatings[i]);
-	
+
 	addField(STS_END, 120);
 	addField(STS_COUNT, 50);
 	addField(STS_WF_IWAD, 50);
@@ -314,12 +338,18 @@ DifficultyStatSet::DifficultyStatSet(wxString setName) : StatisticSet("Difficult
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }
@@ -357,18 +387,26 @@ PlaystyleStatSet::PlaystyleStatSet(wxString setName) : StatisticSet("Playstyle",
 	statMap = new map<int, MapStatistics*>();
 	for (int i=0; i<3; i++)
 		(*statMap)[i] = new MapStatistics(playStyles[i]);
-	
+
 	addField(STS_END, 120);
 	addField(STS_COUNT, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }
@@ -408,15 +446,23 @@ AuthorStatSet::AuthorStatSet(wxString setName, map<int, MapStatistics*>* authorS
 	statMap = authorStats;
 	addField(STS_END, 200);
 	addField(STS_COUNT, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }
@@ -470,15 +516,23 @@ TagStatSet::TagStatSet(wxString setName, map<int, MapStatistics*>* tagStats)
 	statMap = tagStats;
 	addField(STS_END, 200);
 	addField(STS_COUNT, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
 	addField(STS_COOP, 50);
 	addField(STS_DM, 50);
+	addField(STS_LINEDEFS, 80);
 	addField(STS_LINEDEFS_AVG, 80);
+	addField(STS_SECTORS, 80);
 	addField(STS_SECTORS_AVG, 80);
+	addField(STS_THINGS, 80);
 	addField(STS_THINGS_AVG, 80);
 	addField(STS_SECRETS_AVG, 80);
 	addField(STS_ENEMIES_AVG, 80);
 	addField(STS_TOTALHP_AVG, 80);
+	addField(STS_AMMORAT_AVG, 80);
+	addField(STS_HEALTHRAT_AVG, 80);
+	addField(STS_ARMORRAT_AVG, 80);
 	addField(STS_AREA_AVG, 80);
 	addField(STS_OWNRATING_AVG, 60);
 }

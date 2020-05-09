@@ -84,6 +84,7 @@ void GuiViewSelect::populate(DataManager* dataMan, WadMapFields wadSort, WadMapF
 	engineFilters(mapFilters, FILTER_MAP);
 	playStyleFilters(mapFilters, FILTER_MAP);
 	yearFilters(mapFilters, FILTER_MAP);
+	contentFilters(mapFilters, FILTER_MAP);
 	ownStuffFilters(mapFilters, FILTER_MAP);
 
 	wadLists = AppendItem(root, "Wad lists");
@@ -313,6 +314,20 @@ void GuiViewSelect::engineFilters(const wxTreeItemId& root, unsigned char type)
 	for (unsigned char i=DENG_CUSTOM; i<DENG_END; i++) {
 		addFilter(engineGroup, new EngineFilter(type, DFOP_EQUALS, i), engineNames[i]);
 	}
+	ComboDataFilter* cdf = new ComboDataFilter(type);
+	cdf->addFilter(new EngineFilter(type, DFOP_MORE, DENG_CUSTOM));
+	cdf->addFilter(new EngineFilter(type, DFOP_LESS, DENG_BOOM));
+	addFilter(engineGroup, cdf, "Vanilla (org+LR)");
+
+	cdf = new ComboDataFilter(type);
+	cdf->addFilter(new EngineFilter(type, DFOP_MORE, DENG_CUSTOM));
+	cdf->addFilter(new EngineFilter(type, DFOP_LESS, DENG_LEGACY));
+	addFilter(engineGroup, cdf, "Vanilla+Boom");
+
+	cdf = new ComboDataFilter(type);
+	cdf->addFilter(new EngineFilter(type, DFOP_MORE, DENG_LEGACY));
+	cdf->addFilter(new EngineFilter(type, DFOP_LESS, DENG_END));
+	addFilter(engineGroup, cdf, "Any ZDoom");
 }
 
 void GuiViewSelect::playStyleFilters(const wxTreeItemId& root, unsigned char type)
@@ -338,7 +353,6 @@ void GuiViewSelect::contentFilters(const wxTreeItemId& root, unsigned char type)
 	uint16_t all = WF_SPRITES|WF_TEX|WF_GFX|WF_COLOR|WF_SOUND|WF_MUSIC
 			|WF_DEHBEX|WF_THINGS|WF_SCRIPT|WF_GLNODES;
 	addFilter(cGroup, new WadFlagsInvFilter(type, all), "None (pure stock)");
-
 	addFilter(cGroup, new WadFlagsFilter(type, WF_SPRITES), wadMapLabels[WAD_WF_SPRITES]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_TEX), wadMapLabels[WAD_WF_TEX]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_GFX), wadMapLabels[WAD_WF_GFX]);
@@ -346,9 +360,13 @@ void GuiViewSelect::contentFilters(const wxTreeItemId& root, unsigned char type)
 	addFilter(cGroup, new WadFlagsFilter(type, WF_SOUND), wadMapLabels[WAD_WF_SOUND]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_MUSIC), wadMapLabels[WAD_WF_MUSIC]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_DEHBEX), wadMapLabels[WAD_WF_DEHBEX]);
+	addFilter(cGroup, new WadFlagsInvFilter(type, WF_DEHBEX), "Not "+wadMapLabels[WAD_WF_DEHBEX]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_THINGS), wadMapLabels[WAD_WF_THINGS]);
+	addFilter(cGroup, new WadFlagsInvFilter(type, WF_THINGS), "Not "+wadMapLabels[WAD_WF_THINGS]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_SCRIPT), wadMapLabels[WAD_WF_SCRIPT]);
+	addFilter(cGroup, new WadFlagsInvFilter(type, WF_SCRIPT), "Not "+wadMapLabels[WAD_WF_SCRIPT]);
 	addFilter(cGroup, new WadFlagsFilter(type, WF_GLNODES), wadMapLabels[WAD_WF_GLNODES]);
+	addFilter(cGroup, new WadFlagsInvFilter(type, WF_GLNODES), "Not "+wadMapLabels[WAD_WF_GLNODES]);
 }
 
 void GuiViewSelect::gameModeFilters(const wxTreeItemId& root)
@@ -362,6 +380,8 @@ void GuiViewSelect::gameModeFilters(const wxTreeItemId& root)
 	cdf->addFilter(new DeathmatchFilter(FILTER_MAP, DFOP_MORE, 2));
 	cdf->addFilter(new SinglePlayerFilter(FILTER_MAP, DFOP_LESS, 2));
 	addFilter(modeGroup, cdf, "Deathmatch only");
+
+	addFilter(modeGroup, new DeathmatchFilter(FILTER_MAP, DFOP_LESS, 3), "Not deathmatch");
 
 	for (int i=1; i<3; i++)
 		addFilter(modeGroup, new OtherModeFilter(FILTER_MAP, DFOP_EQUALS, i), otherGameModes[i]);
