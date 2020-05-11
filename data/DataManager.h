@@ -40,7 +40,7 @@
 
 #include "DataModel.h"
 #include "DataFilter.h"
-#include "MapStatistics.h"
+#include "WadStatistics.h"
 #include "StatisticSet.h"
 #include "../LtbUtils.h"
 
@@ -881,6 +881,12 @@ class DataManager
 	*/
 	MapStatistics* getStatistics(int filterType);
 
+	/*!
+	* Generate a WadStatistics object with statistics for all wads
+	* in the current wad list.
+	*/
+	WadStatistics* getWadStatistics();
+
 	/*! Get statistics categorized by year of wad. */
 	StatisticSet* getYearStats(int filterType);
 
@@ -904,6 +910,18 @@ class DataManager
 
 	/*! Get statistics categorized by style tags. */
 	StatisticSet* getTagStats(int filterType);
+
+	/*! Get wad statistics categorized by year. */
+	StatisticSet* getYearWadStats();
+
+	/*! Get wad statistics categorized by target iwad. */
+	StatisticSet* getIwadWadStats();
+
+	/*! Get wad statistics categorized by target engine. */
+	StatisticSet* getEngineWadStats();
+
+	/*! Get wad statistics categorized by own rating. */
+	StatisticSet* getRatingWadStats();
 
 
 	private:

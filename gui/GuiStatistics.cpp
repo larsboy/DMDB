@@ -4,7 +4,7 @@
 //************************ StatisticsReport ************************
 //******************************************************************
 
-StatisticsReport::StatisticsReport(wxWindow* parent, const wxPoint& pos, MapStatistics* mapSt)
+StatisticsReport::StatisticsReport(wxWindow* parent, const wxPoint& pos, DBStatistics* stats)
 : GuiReport(parent, "Statistics", pos, wxSize(500,400))
 {
 	//Main layout objects:
@@ -22,8 +22,8 @@ StatisticsReport::StatisticsReport(wxWindow* parent, const wxPoint& pos, MapStat
     SetSizer(topSizer);
     //topSizer->SetSizeHints(this); //Set minimal size for window based on topSizer
     //topSizer->Fit(this); //Resize window to match topSizer minimal size
-    
-    mapSt->printReport(this);
+
+    stats->printReport(this);
 }
 
 //Event table:
@@ -102,16 +102,16 @@ wxString GuiStatsList::OnGetItemText(long item, long column) const
 		iter--;
 		iterIndex--;
 	}
-	MapStatistics* ms = *iter;
+	DBStatistics* dbs = *iter;
 	if (column == 0) {
-		return ms->heading;
+		return dbs->heading;
 	} else {
 		int index = statSet->fields[column];
 		if (index < STS_LINEDEFS_AVG)
-			return wxString::Format("%i", ms->intStats[index]);
+			return wxString::Format("%i", dbs->intStats[index]);
 		else
-			return wxString::Format("%.2f", ms->floatStats[index]);
-		
+			return wxString::Format("%.2f", dbs->floatStats[index]);
+
 	}
 }
 
@@ -132,8 +132,8 @@ void GuiStatsList::itemActivated(wxListEvent& event)
 		iter--;
 		iterIndex--;
 	}
-	MapStatistics* ms = *iter;
-	StatisticsReport* report = new StatisticsReport(this, wxPoint(200,200), ms);
+	DBStatistics* dbs = *iter;
+	StatisticsReport* report = new StatisticsReport(this, wxPoint(200,200), dbs);
 	int result = report->ShowModal();
 	report->Destroy();
 }

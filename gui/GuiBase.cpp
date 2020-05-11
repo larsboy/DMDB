@@ -75,7 +75,7 @@ wxMenuBar* GuiMenubarManager::createMenubar(wxFrame* parent)
 
     //Stats menu:
 	wxMenu* statsMenu=new wxMenu();
-	statsMenu->Append(LSTATS_TOTAL, "Total statistics");
+	statsMenu->Append(LSTATS_TOTAL, "Map statistics");
 	statsMenu->Append(LSTATS_YEARS, "Statistics by year");
 	statsMenu->Append(LSTATS_IWAD, "Statistics by Iwad");
 	statsMenu->Append(LSTATS_ENGINE, "Statistics by engine");
@@ -84,6 +84,12 @@ wxMenuBar* GuiMenubarManager::createMenubar(wxFrame* parent)
 	statsMenu->Append(LSTATS_PLAYST, "Statistics by playstyle");
 	statsMenu->Append(LSTATS_PEOPLE, "Statistics by authors");
 	statsMenu->Append(LSTATS_TAGS, "Statistics by tags");
+	statsMenu->AppendSeparator();
+	statsMenu->Append(LSTATS_WTOTAL, "Wad statistics");
+	statsMenu->Append(LSTATS_WYEARS, "Statistics by year");
+	statsMenu->Append(LSTATS_WIWAD, "Statistics by Iwad");
+	statsMenu->Append(LSTATS_WENGINE, "Statistics by engine");
+	statsMenu->Append(LSTATS_WRATING, "Statistics by rating");
 
     //ThingDef menu:
 	wxMenu* toolsMenu=new wxMenu();
@@ -128,6 +134,20 @@ void GuiMenubarManager::enableItems(bool hasDB)
 	currentMenubar->Enable(LSTATS_PLAYST, hasDB);
 	currentMenubar->Enable(LSTATS_PEOPLE, hasDB);
 	currentMenubar->Enable(LSTATS_TAGS, hasDB);
+	currentMenubar->Enable(LSTATS_WTOTAL, hasDB);
+	currentMenubar->Enable(LSTATS_WYEARS, hasDB);
+	currentMenubar->Enable(LSTATS_WIWAD, hasDB);
+	currentMenubar->Enable(LSTATS_WENGINE, hasDB);
+	currentMenubar->Enable(LSTATS_WRATING, hasDB);
+}
+
+void GuiMenubarManager::enableWadItems(bool wadList)
+{
+	currentMenubar->Enable(LSTATS_WTOTAL, wadList);
+	currentMenubar->Enable(LSTATS_WYEARS, wadList);
+	currentMenubar->Enable(LSTATS_WIWAD, wadList);
+	currentMenubar->Enable(LSTATS_WENGINE, wadList);
+	currentMenubar->Enable(LSTATS_WRATING, wadList);
 }
 
 void GuiMenubarManager::setItemState(ApplicationMenuEvents toolId, bool newState)

@@ -6,17 +6,17 @@
 
 StatFields statisticSetSortField;
 
-bool stat_comp_int(MapStatistics* first, MapStatistics* second)
+bool stat_comp_int(DBStatistics* first, DBStatistics* second)
 {
 	return (first->intStats[statisticSetSortField] > second->intStats[statisticSetSortField]);
 }
 
-bool stat_comp_float(MapStatistics* first, MapStatistics* second)
+bool stat_comp_float(DBStatistics* first, DBStatistics* second)
 {
 	return (first->floatStats[statisticSetSortField] > second->floatStats[statisticSetSortField]);
 }
 
-bool stat_comp_name(MapStatistics* first, MapStatistics* second)
+bool stat_comp_name(DBStatistics* first, DBStatistics* second)
 {
 	return (first->heading.CmpNoCase(second->heading) < 0);
 }
@@ -38,7 +38,7 @@ StatisticSet::StatisticSet(wxString category, wxString name)
 StatisticSet::~StatisticSet()
 {
 	if (statList != NULL) {
-		for (list<MapStatistics*>::iterator it=statList->begin(); it!=statList->end(); ++it)
+		for (list<DBStatistics*>::iterator it=statList->begin(); it!=statList->end(); ++it)
 			delete *it;
 		delete statList;
 	}
@@ -46,6 +46,7 @@ StatisticSet::~StatisticSet()
 
 void StatisticSet::processWad(WadEntry* wadEntry)
 {
+	//For map statistics - override for wad statistics
 	for (int i=0; i<wadEntry->numberOfMaps; i++)
 		processMap(wadEntry->mapPointers.at(i));
 }
@@ -82,7 +83,7 @@ YearStatSet::YearStatSet(wxString setName) : StatisticSet("Year", setName)
 {
 	statMap = new map<int, MapStatistics*>();
 	addField(STS_YEAR_MIN, 60);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -126,7 +127,7 @@ void YearStatSet::processMap(MapEntry* mapEntry)
 
 void YearStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
@@ -144,7 +145,7 @@ IwadStatSet::IwadStatSet(wxString setName) : StatisticSet("Iwad", setName)
 {
 	statMap = new map<int, MapStatistics*>();
 	addField(STS_END, 100);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -188,7 +189,7 @@ void IwadStatSet::processMap(MapEntry* mapEntry)
 
 void IwadStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
@@ -206,7 +207,7 @@ EngineStatSet::EngineStatSet(wxString setName) : StatisticSet("Engine", setName)
 {
 	statMap = new map<int, MapStatistics*>();
 	addField(STS_END, 100);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -250,7 +251,7 @@ void EngineStatSet::processMap(MapEntry* mapEntry)
 
 void EngineStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
@@ -272,7 +273,7 @@ RatingStatSet::RatingStatSet(wxString setName) : StatisticSet("Own rating", setN
 	(*statMap)[11] = new MapStatistics("No rating");
 
 	addField(STS_END, 80);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -310,7 +311,7 @@ void RatingStatSet::processMap(MapEntry* mapEntry)
 
 void RatingStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
@@ -332,7 +333,7 @@ DifficultyStatSet::DifficultyStatSet(wxString setName) : StatisticSet("Difficult
 		(*statMap)[i] = new MapStatistics(difficultyRatings[i]);
 
 	addField(STS_END, 120);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -368,7 +369,7 @@ void DifficultyStatSet::processMap(MapEntry* mapEntry)
 
 void DifficultyStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
@@ -389,7 +390,7 @@ PlaystyleStatSet::PlaystyleStatSet(wxString setName) : StatisticSet("Playstyle",
 		(*statMap)[i] = new MapStatistics(playStyles[i]);
 
 	addField(STS_END, 120);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -425,7 +426,7 @@ void PlaystyleStatSet::processMap(MapEntry* mapEntry)
 
 void PlaystyleStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
@@ -445,7 +446,7 @@ AuthorStatSet::AuthorStatSet(wxString setName, map<int, MapStatistics*>* authorS
 	unknown = new MapStatistics("Unknown");
 	statMap = authorStats;
 	addField(STS_END, 200);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -489,14 +490,14 @@ void AuthorStatSet::processMap(MapEntry* mapEntry)
 
 void AuthorStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
 	}
 	delete statMap;
 	statMap = NULL;
-	if (unknown->intStats[STS_COUNT] > 0) {
+	if (unknown->intStats[STS_MAPS] > 0) {
 		statList->push_back(unknown);
 	} else {
 		delete unknown;
@@ -515,7 +516,7 @@ TagStatSet::TagStatSet(wxString setName, map<int, MapStatistics*>* tagStats)
 	none = new MapStatistics("None");
 	statMap = tagStats;
 	addField(STS_END, 200);
-	addField(STS_COUNT, 50);
+	addField(STS_MAPS, 50);
 	addField(STS_WF_IWAD, 50);
 	addField(STS_WF_THINGS, 50);
 	addField(STS_SINGLE, 50);
@@ -559,17 +560,223 @@ void TagStatSet::processMap(MapEntry* mapEntry)
 
 void TagStatSet::computeResults()
 {
-	statList = new list<MapStatistics*>();
+	statList = new list<DBStatistics*>();
 	for (map<int,MapStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
 		it->second->computeResults();
 		statList->push_back(it->second);
 	}
 	delete statMap;
 	statMap = NULL;
-	if (none->intStats[STS_COUNT] > 0) {
+	if (none->intStats[STS_MAPS] > 0) {
 		statList->push_back(none);
 	} else {
 		delete none;
 		none = NULL;
 	}
+}
+
+
+//****************************************************************
+//************************ YearWadStatSet ************************
+//****************************************************************
+
+YearWadStatSet::YearWadStatSet(wxString setName) : StatisticSet("Year", setName)
+{
+	statMap = new map<int, WadStatistics*>();
+	addField(STS_YEAR_MIN, 60);
+	addField(STS_WADS, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
+	addField(STS_MAPS, 80);
+	addField(STS_MAPS_AVG, 80);
+	addField(STS_MAPS_MIN, 80);
+	addField(STS_MAPS_MAX, 80);
+	addField(STS_SIZE, 100);
+	addField(STS_SIZE_AVG, 80);
+	addField(STS_OWNRATING_AVG, 60);
+}
+
+YearWadStatSet::~YearWadStatSet()
+{
+	if (statMap != NULL)
+		delete statMap;
+}
+
+void YearWadStatSet::processWad(WadEntry* wadEntry)
+{
+	map<int,WadStatistics*>::iterator it = statMap->find(wadEntry->year);
+	if (it == statMap->end()) {
+		wxString name = (wadEntry->year==0)? "Unknown" :
+				wxString::Format("%i", wadEntry->year);
+		WadStatistics* ms = new WadStatistics(name);
+		ms->processWad(wadEntry);
+		(*statMap)[wadEntry->year] = ms;
+	} else {
+		it->second->processWad(wadEntry);
+	}
+}
+
+void YearWadStatSet::computeResults()
+{
+	statList = new list<DBStatistics*>();
+	for (map<int,WadStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
+		it->second->computeResults();
+		statList->push_back(it->second);
+	}
+	delete statMap;
+	statMap = NULL;
+}
+
+
+//****************************************************************
+//************************ IwadWadStatSet ************************
+//****************************************************************
+
+IwadWadStatSet::IwadWadStatSet(wxString setName) : StatisticSet("Iwad", setName)
+{
+	statMap = new map<int, WadStatistics*>();
+	addField(STS_END, 100);
+	addField(STS_WADS, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
+	addField(STS_MAPS, 80);
+	addField(STS_MAPS_AVG, 80);
+	addField(STS_MAPS_MIN, 80);
+	addField(STS_MAPS_MAX, 80);
+	addField(STS_SIZE, 100);
+	addField(STS_SIZE_AVG, 80);
+	addField(STS_OWNRATING_AVG, 60);
+}
+
+IwadWadStatSet::~IwadWadStatSet()
+{
+	if (statMap != NULL)
+		delete statMap;
+}
+
+void IwadWadStatSet::processWad(WadEntry* wadEntry)
+{
+	map<int,WadStatistics*>::iterator it = statMap->find(wadEntry->iwad);
+	if (it == statMap->end()) {
+		wxString name = (wadEntry->iwad==0)? "Unknown" :
+				iwadNames[wadEntry->iwad];
+		WadStatistics* ms = new WadStatistics(name);
+		ms->processWad(wadEntry);
+		(*statMap)[wadEntry->iwad] = ms;
+	} else {
+		it->second->processWad(wadEntry);
+	}
+}
+
+void IwadWadStatSet::computeResults()
+{
+	statList = new list<DBStatistics*>();
+	for (map<int,WadStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
+		it->second->computeResults();
+		statList->push_back(it->second);
+	}
+	delete statMap;
+	statMap = NULL;
+}
+
+
+//******************************************************************
+//************************ EngineWadStatSet ************************
+//******************************************************************
+
+EngineWadStatSet::EngineWadStatSet(wxString setName) : StatisticSet("Engine", setName)
+{
+	statMap = new map<int, WadStatistics*>();
+	addField(STS_END, 100);
+	addField(STS_WADS, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
+	addField(STS_MAPS, 80);
+	addField(STS_MAPS_AVG, 80);
+	addField(STS_MAPS_MIN, 80);
+	addField(STS_MAPS_MAX, 80);
+	addField(STS_SIZE, 100);
+	addField(STS_SIZE_AVG, 80);
+	addField(STS_OWNRATING_AVG, 60);
+}
+
+EngineWadStatSet::~EngineWadStatSet()
+{
+	if (statMap != NULL)
+		delete statMap;
+}
+
+void EngineWadStatSet::processWad(WadEntry* wadEntry)
+{
+	map<int,WadStatistics*>::iterator it = statMap->find(wadEntry->engine);
+	if (it == statMap->end()) {
+		wxString name = (wadEntry->engine==0)? "Unknown" :
+				engineNames[wadEntry->engine];
+		WadStatistics* ms = new WadStatistics(name);
+		ms->processWad(wadEntry);
+		(*statMap)[wadEntry->engine] = ms;
+	} else {
+		it->second->processWad(wadEntry);
+	}
+}
+
+void EngineWadStatSet::computeResults()
+{
+	statList = new list<DBStatistics*>();
+	for (map<int,WadStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
+		it->second->computeResults();
+		statList->push_back(it->second);
+	}
+	delete statMap;
+	statMap = NULL;
+}
+
+
+//******************************************************************
+//************************ RatingWadStatSet ************************
+//******************************************************************
+
+RatingWadStatSet::RatingWadStatSet(wxString setName) : StatisticSet("Own rating", setName)
+{
+	statMap = new map<int, WadStatistics*>();
+	for (int i=0; i<=10; i++)
+		(*statMap)[i] = new WadStatistics(wxString::Format("%i",i));
+	(*statMap)[11] = new WadStatistics("No rating");
+
+	addField(STS_END, 100);
+	addField(STS_WADS, 50);
+	addField(STS_WF_IWAD, 50);
+	addField(STS_WF_THINGS, 50);
+	addField(STS_MAPS, 80);
+	addField(STS_MAPS_AVG, 80);
+	addField(STS_MAPS_MIN, 80);
+	addField(STS_MAPS_MAX, 80);
+	addField(STS_SIZE, 100);
+	addField(STS_SIZE_AVG, 80);
+}
+
+RatingWadStatSet::~RatingWadStatSet()
+{
+	if (statMap != NULL)
+		delete statMap;
+}
+
+void RatingWadStatSet::processWad(WadEntry* wadEntry)
+{
+	int rat = 11;
+	if (wadEntry->ownRating<=100)
+		rat = wadEntry->ownRating/10;
+	map<int,WadStatistics*>::iterator it = statMap->find(rat);
+	it->second->processWad(wadEntry);
+}
+
+void RatingWadStatSet::computeResults()
+{
+	statList = new list<DBStatistics*>();
+	for (map<int,WadStatistics*>::iterator it=statMap->begin(); it!=statMap->end(); ++it) {
+		it->second->computeResults();
+		statList->push_back(it->second);
+	}
+	delete statMap;
+	statMap = NULL;
 }

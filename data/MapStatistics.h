@@ -2,12 +2,13 @@
 * \file MapStatistics.h
 * \author Lars Thomas Boye 2018
 *
-* The MapStatistics object aggregates statistics for a set of maps,
-* such as min, max and average values and counts. A large number of
-* values are tracked, all defined by enum StatFields. The corresponding
-* statLabels gives short titles for each field. While the majority of
-* the fields are computed from the data of MapEntry objects, some come
-* from the WadEntry (but counted once for each map).
+* A DBStatistics object aggregates statistics for a set of wads or
+* maps, such as min, max and average values and counts. A large number
+* of values can be tracked, all defined by enum StatFields. The
+* corresponding statLabels gives short titles for each field.
+* DBStatistics itself is an abstract class, with MapStatistics being
+* an implementation for map statistics, implementing processing
+* and report generation.
 */
 
 #ifndef MAPSTATISTICS_H
@@ -17,13 +18,14 @@
 #include "../TextReport.h"
 
 /*!
-* Defines values to track with MapStatistics. The first part are
+* Defines values to track with DBStatistics. The first part are
 * integer values (unsigned long), while the last part are
 * floating-point (double).
 */
 enum StatFields {
-	STS_COUNT, //!< Number of items counted
-	
+	STS_MAPS, //!< Number of maps counted
+	STS_WADS, //!< Number of wads counted
+
 	//Wad fields
 	STS_YEAR_MIN, //!< Lowest (valid) wad year value
 	STS_YEAR_MAX, //!< Highest (valid) wad year value
@@ -39,7 +41,7 @@ enum StatFields {
 	STS_WF_SCRIPT,
 	STS_WF_GLNODES,
 	STS_OF_HAVEFILE, //!< Count of OwnFlags HAVEFILE
-	
+
 	//Map integer fields
 	STS_SINGLE, //!< Maps "made for" singlePlayer
 	STS_COOP, //!< Maps "made for" cooperative
@@ -74,8 +76,12 @@ enum StatFields {
 	STS_OWNRATING,
 	STS_PLAYED, //!< Number of played>0
 	//STS_PLAYTIME,
-	
-	//Map floating-point fields
+	STS_MAPS_MIN,
+	STS_MAPS_MAX,
+	STS_SIZE_MIN,
+	STS_SIZE_MAX,
+
+	//Floating-point fields
 	STS_LINEDEFS_AVG,
 	STS_SECTORS_AVG,
 	STS_THINGS_AVG,
@@ -95,7 +101,10 @@ enum StatFields {
 	STS_AREA_MAX,
 	STS_AREA_AVG,
 	STS_OWNRATING_AVG,
-	
+	STS_MAPS_AVG,
+	STS_SIZE, //!< Total file size in bytes
+	STS_SIZE_AVG,
+
 	STS_END
 };
 
@@ -105,6 +114,7 @@ enum StatFields {
 */
 const wxString statLabels[] = {
 	"Maps",
+	"Wads",
 	"From",
 	"To",
 	"Iwad",
@@ -150,6 +160,10 @@ const wxString statLabels[] = {
 	"Rated",
 	"Rating",
 	"Played",
+	"Min.maps",
+	"Max.maps",
+	"Min.bytes",
+	"Max.bytes",
 	"Avg.linedefs",
 	"Avg.sectors",
 	"Avg.things",
@@ -168,7 +182,10 @@ const wxString statLabels[] = {
 	"Min.area",
 	"Max.area",
 	"Avg.area",
-	"Avg.rating%"
+	"Avg.rating%",
+	"Avg.maps",
+	"Bytes",
+	"Avg.bytes"
 };
 
 /*! Initial value for integer minimum statistics. */
@@ -178,87 +195,110 @@ const unsigned long INVALID_MIN_INT = 1000000;
 const double INVALID_MIN_FLOAT = 1000000;
 
 /*!
-* Represents and computes statistics for a set of maps.
-* Either call processMap for each map in the set, or processWad
-* for each wad, which will process each map in the wad. Once
-* all maps/wads have been processed, call computeResults to
-* make the final computations. The results themselves are kept
-* in two arrays, for integer and floating-point values, with
-* the StatFields enum giving the indices.
+* Base class for statistics objects, which compute statistics
+* for maps and/or wads. It defines methods for processing data
+* and generating a report, to be implemented by concrete
+* classes. The use the objects, call the process methods for
+* each map/wad enyty, then computeResults to make the final
+* computations. The results themselves are kept in two arrays,
+* for integer and floating-point values, with the StatFields
+* enum giving the indices.
 */
-class MapStatistics
+class DBStatistics
 {
 	public:
 		/*!
-		* A MapStatistics object needs a name, used as a heading
+		* A DBStatistics object needs a name, used as a heading
 		* when displaying the statistics.
 		*/
-		MapStatistics(wxString name);
-		
-		virtual ~MapStatistics();
-		
+		DBStatistics(wxString name);
+
+		virtual ~DBStatistics() {}
+
 		/*!
 		* To compute statistics from a set of MapEntry objects,
 		* call this with each map.
 		*/
-		void processMap(MapEntry* mapEntry);
-		
+		virtual void processMap(MapEntry* mapEntry) = 0;
+
 		/*!
 		* To compute statistics from a set of WadEntry objects,
-		* call this with each wad. Each map in the wad is processed.
+		* call this with each wad.
 		*/
-		void processWad(WadEntry* wadEntry);
-		
+		virtual void processWad(WadEntry* wadEntry) = 0;
+
 		/*!
 		* This must be called once all maps or wads have been
 		* processed, to make final computations. Once done, the
 		* results can be accessed in the arrays.
 		*/
-		void computeResults();
-		
+		virtual void computeResults() = 0;
+
 		/*!
 		* Outputs the statistics through the TextReport interface.
 		*/
-		void printReport(TextReport* reportView);
-		
+		virtual void printReport(TextReport* reportView) = 0;
+
+		/*! A name for the DBStatistics, to show as a heading. */
+		wxString heading;
+
 		//unsigned long: 32 bit? 4,294,967,295
 		//uint64_t: 18,446,744,073,709,551,615
 		//double: ~15 digits accuracy
-		
-		/*! A name for the MapStatistics, to show as a heading. */
-		wxString heading;
-		
+
 		/*!
 		* Contains the integer statistics once computeResults
-		* has been called. Indices are given by StatFields,
-		* and includes all below STS_LINEDEFS_AVG.
+		* has been called. Indices are given by StatFields, up
+		* to (but not including) STS_LINEDEFS_AVG. Note that an
+		* implementation doesn't necessarily use all fields.
 		*/
 		unsigned long intStats[STS_LINEDEFS_AVG];
-		
-		/*! 
+
+		/*!
 		* Contains the floating-point statistics once
-		* computeResults has been called. The size of the
-		* array is the same as StatFields, but only entries
-		* from STS_LINEDEFS_AVG and up are used, as the lower
-		* ones are for integer values.
+		* computeResults has been called. The size of the array
+		* is the same as StatFields, but only entries from
+		* STS_LINEDEFS_AVG and up are used, as the lower ones
+		* are for integer values.
 		*/
 		double floatStats[STS_END];
 
 	protected:
-
-	private:
 		/*! Set all integer minimum fields to a specific value. */
 		void setIntMins(unsigned long minValue);
-		
+
 		/*! Set all floating-point minimum fields to a specific value. */
 		void setFloatMins(double minValue);
-		
+};
+
+/*!
+* Represents and computes statistics for a set of maps.
+* While the majority of the fields are computed from the data
+* of MapEntry objects, some come from the WadEntry (but counted
+* once for each map). Either call processMap for each map in
+* the set, or processWad for each wad, which will process each
+* map in the wad.
+*/
+class MapStatistics : public DBStatistics
+{
+	public:
+		MapStatistics(wxString name);
+		virtual ~MapStatistics();
+
+		virtual void processMap(MapEntry* mapEntry);
+		virtual void processWad(WadEntry* wadEntry);
+		virtual void computeResults();
+		virtual void printReport(TextReport* reportView);
+
+	protected:
+
+	private:
 		/*! Adds statistics for a WadEntry, for a specified number of map entries. */
 		void processWad(WadEntry* wadEntry, int maps);
-		
+
 		/*! Add statistics for the geometry fields of a MapEntry. */
 		void processGeometry(MapEntry* mapEntry);
-		
+
 		/*! Add statistics for the gameplay fields of a MapEntry. */
 		void processGameplay(MapEntry* mapEntry);
 };

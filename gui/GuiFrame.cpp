@@ -353,6 +353,11 @@ BEGIN_EVENT_TABLE(GuiFrame, wxFrame)
 	EVT_MENU(LSTATS_PLAYST, GuiFrame::onStatsPlaystyle)
 	EVT_MENU(LSTATS_PEOPLE, GuiFrame::onStatsPeople)
 	EVT_MENU(LSTATS_TAGS, GuiFrame::onStatsTags)
+	EVT_MENU(LSTATS_WTOTAL, GuiFrame::onWadStatsTotal)
+	EVT_MENU(LSTATS_WYEARS, GuiFrame::onWadStatsYears)
+	EVT_MENU(LSTATS_WIWAD, GuiFrame::onWadStatsIwad)
+	EVT_MENU(LSTATS_WENGINE, GuiFrame::onWadStatsEngine)
+	EVT_MENU(LSTATS_WRATING, GuiFrame::onWadStatsRating)
 	//Options menu:
 	EVT_MENU(LOPT_TEST, GuiFrame::onTest)
 	EVT_MENU(LOPT_APPSETTINGS, GuiFrame::onAppSettings)
@@ -839,7 +844,6 @@ void GuiFrame::onStatsRating(wxCommandEvent& event)
 	delete stats;
 }
 
-
 void GuiFrame::onStatsDifficulty(wxCommandEvent& event)
 {
 	StatisticSet* stats = dataBase->getDifficultyStats(mapList->getCurrentType());
@@ -870,6 +874,51 @@ void GuiFrame::onStatsPeople(wxCommandEvent& event)
 void GuiFrame::onStatsTags(wxCommandEvent& event)
 {
 	StatisticSet* stats = dataBase->getTagStats(mapList->getCurrentType());
+	GuiStatistics* dialog = new GuiStatistics(this, getDialogPos(300,400), stats);
+	int result = dialog->ShowModal();
+	dialog->Destroy();
+	delete stats;
+}
+
+void GuiFrame::onWadStatsTotal(wxCommandEvent& event)
+{
+	WadStatistics* stats = dataBase->getWadStatistics();
+	StatisticsReport* report = new StatisticsReport(this, getDialogPos(300,400), stats);
+	int result = report->ShowModal();
+	report->Destroy();
+	delete stats;
+}
+
+void GuiFrame::onWadStatsYears(wxCommandEvent& event)
+{
+	StatisticSet* stats = dataBase->getYearWadStats();
+	GuiStatistics* dialog = new GuiStatistics(this, getDialogPos(300,400), stats);
+	int result = dialog->ShowModal();
+	dialog->Destroy();
+	delete stats;
+}
+
+void GuiFrame::onWadStatsIwad(wxCommandEvent& event)
+{
+	StatisticSet* stats = dataBase->getIwadWadStats();
+	GuiStatistics* dialog = new GuiStatistics(this, getDialogPos(300,400), stats);
+	int result = dialog->ShowModal();
+	dialog->Destroy();
+	delete stats;
+}
+
+void GuiFrame::onWadStatsEngine(wxCommandEvent& event)
+{
+	StatisticSet* stats = dataBase->getEngineWadStats();
+	GuiStatistics* dialog = new GuiStatistics(this, getDialogPos(300,400), stats);
+	int result = dialog->ShowModal();
+	dialog->Destroy();
+	delete stats;
+}
+
+void GuiFrame::onWadStatsRating(wxCommandEvent& event)
+{
+	StatisticSet* stats = dataBase->getRatingWadStats();
 	GuiStatistics* dialog = new GuiStatistics(this, getDialogPos(300,400), stats);
 	int result = dialog->ShowModal();
 	dialog->Destroy();
@@ -1089,6 +1138,7 @@ void GuiFrame::onSearchCancel(wxCommandEvent& event)
 void GuiFrame::onViewSelected(DataFilter* dataView)
 {
 	int type = (dataView->type < FILTER_MAP)? 0: 1; //Wad or map
+	menuBar->enableWadItems(type==0);
 	if (mapPanel != NULL) { //Currently showing map
 		mapPanel->readChanges();
 		if (type == 0) { //Switch to wadPanel

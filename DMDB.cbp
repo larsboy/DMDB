@@ -113,6 +113,8 @@
 		<Unit filename="data/WadArchive.h" />
 		<Unit filename="data/WadReader.cpp" />
 		<Unit filename="data/WadReader.h" />
+		<Unit filename="data/WadStatistics.cpp" />
+		<Unit filename="data/WadStatistics.h" />
 		<Unit filename="data/WadStats.cpp" />
 		<Unit filename="data/WadStats.h" />
 		<Unit filename="data/md5.cpp" />

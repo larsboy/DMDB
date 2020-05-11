@@ -142,6 +142,11 @@ enum ApplicationMenuEvents {
 	LSTATS_PLAYST,	//!< Categorized by playstyle
 	LSTATS_PEOPLE,	//!< Categorized by author
 	LSTATS_TAGS,	//!< Categorized by style tags
+	LSTATS_WTOTAL,	//!< Uncategorized wad statistics
+	LSTATS_WYEARS,
+	LSTATS_WIWAD,
+	LSTATS_WENGINE,
+	LSTATS_WRATING,
 	//Options menu:
 	LOPT_TEST,		//!< Debug only
 	LOPT_APPSETTINGS, //!< Show dialog to set application settings
@@ -188,6 +193,9 @@ class GuiMenubarManager
 
 	//! Enables/disables toolbar items based on whether a database is loaded.
 	void enableItems(bool hasDB);
+
+	//! Call with true when we have a wad list, false when we have a map list.
+	void enableWadItems(bool wadList);
 
 	void setItemState(ApplicationMenuEvents toolId, bool newState); //!< Sets the state of a toggle item
 	bool getItemState(ApplicationMenuEvents toolId); //!< Gets the on/off state of a toggle item

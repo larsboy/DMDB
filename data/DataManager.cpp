@@ -2907,6 +2907,22 @@ MapStatistics* DataManager::getStatistics(int filterType)
 	return ms;
 }
 
+WadStatistics* DataManager::getWadStatistics()
+{
+	WadStatistics* ws = new WadStatistics(currentWadFilter->name);
+	if (wadList->getSize() > 0) {
+		wadList->reset();
+		WadEntry* we = wadList->entry();
+		ws->processWad(we);
+		while (wadList->next()) {
+			we = wadList->entry();
+			ws->processWad(we);
+		}
+		ws->computeResults();
+	}
+	return ws;
+}
+
 void DataManager::makeStatisticsWads(StatisticSet* sset)
 {
 	if (wadList->getSize() > 0) {
@@ -3054,5 +3070,33 @@ StatisticSet* DataManager::getTagStats(int filterType)
 		ss = new TagStatSet(currentMapFilter->name, tagStats);
 		makeStatisticsMaps(ss);
 	}
+	return ss;
+}
+
+StatisticSet* DataManager::getYearWadStats()
+{
+	StatisticSet* ss = new YearWadStatSet(currentWadFilter->name);
+	makeStatisticsWads(ss);
+	return ss;
+}
+
+StatisticSet* DataManager::getIwadWadStats()
+{
+	StatisticSet* ss = new IwadWadStatSet(currentWadFilter->name);
+	makeStatisticsWads(ss);
+	return ss;
+}
+
+StatisticSet* DataManager::getEngineWadStats()
+{
+	StatisticSet* ss = new EngineWadStatSet(currentWadFilter->name);
+	makeStatisticsWads(ss);
+	return ss;
+}
+
+StatisticSet* DataManager::getRatingWadStats()
+{
+	StatisticSet* ss = new RatingWadStatSet(currentWadFilter->name);
+	makeStatisticsWads(ss);
 	return ss;
 }

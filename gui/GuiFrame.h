@@ -88,6 +88,11 @@ public GuiParent, public DataStatusListener
 	void onStatsPlaystyle(wxCommandEvent& event); //!< Show statistics pr playstyle
 	void onStatsPeople(wxCommandEvent& event); //!< Show statistics pr designer
 	void onStatsTags(wxCommandEvent& event); //!< Show statistics pr tag
+	void onWadStatsTotal(wxCommandEvent& event); //!< Show total wad statistics
+	void onWadStatsYears(wxCommandEvent& event); //!< Show wad statistics pr year
+	void onWadStatsIwad(wxCommandEvent& event); //!< Show wad statistics pr iwad
+	void onWadStatsEngine(wxCommandEvent& event); //!< Show wad statistics pr engine
+	void onWadStatsRating(wxCommandEvent& event); //!< Show wad statistics pr rating
 
 	void onNewThing(wxCommandEvent& event); //!< Create thingDefs from decorate files
 	void onLoadThing(wxCommandEvent& event); //!< Show/edit existing thingDef file

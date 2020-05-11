@@ -1,22 +1,22 @@
 #include "MapStatistics.h"
 
-MapStatistics::MapStatistics(wxString name)
+//**************************************************************
+//************************ DBStatistics ************************
+//**************************************************************
+
+DBStatistics::DBStatistics(wxString name)
 : heading(name)
 {
 	for (int i=0; i<STS_LINEDEFS_AVG; i++)
 		intStats[i] = 0;
 	setIntMins(INVALID_MIN_INT);
-	
+
 	for (int i=0; i<STS_END; i++)
 		floatStats[i] = 0.0;
 	setFloatMins(INVALID_MIN_FLOAT);
 }
 
-MapStatistics::~MapStatistics()
-{
-}
-
-void MapStatistics::setIntMins(unsigned long minValue)
+void DBStatistics::setIntMins(unsigned long minValue)
 {
 	intStats[STS_YEAR_MIN] = minValue;
 	intStats[STS_LINEDEFS_MIN] = minValue;
@@ -25,9 +25,11 @@ void MapStatistics::setIntMins(unsigned long minValue)
 	intStats[STS_SECRETS_MIN] = minValue;
 	intStats[STS_ENEMIES_MIN] = minValue;
 	intStats[STS_TOTALHP_MIN] = minValue;
+	intStats[STS_MAPS_MIN] = minValue;
+	intStats[STS_SIZE_MIN] = minValue;
 }
-		
-void MapStatistics::setFloatMins(double minValue)
+
+void DBStatistics::setFloatMins(double minValue)
 {
 	floatStats[STS_HEALTHRAT_MIN] = minValue;
 	floatStats[STS_ARMORRAT_MIN] = minValue;
@@ -35,9 +37,22 @@ void MapStatistics::setFloatMins(double minValue)
 	floatStats[STS_AREA_MIN] = minValue;
 }
 
+//***************************************************************
+//************************ MapStatistics ************************
+//***************************************************************
+
+MapStatistics::MapStatistics(wxString name)
+: DBStatistics(name)
+{
+}
+
+MapStatistics::~MapStatistics()
+{
+}
+
 void MapStatistics::processMap(MapEntry* mapEntry)
 {
-	intStats[STS_COUNT]++;
+	intStats[STS_MAPS]++;
 	processWad(mapEntry->wadPointer, 1);
 	if (mapEntry->singlePlayer == 3) intStats[STS_SINGLE]++;
 	if (mapEntry->cooperative == 3) intStats[STS_COOP]++;
@@ -57,7 +72,7 @@ void MapStatistics::processMap(MapEntry* mapEntry)
 
 void MapStatistics::processWad(WadEntry* wadEntry)
 {
-	intStats[STS_COUNT]+=wadEntry->numberOfMaps;
+	intStats[STS_MAPS]+=wadEntry->numberOfMaps;
 	processWad(wadEntry, wadEntry->numberOfMaps);
 	MapEntry* mapEntry;
 	for (int i=0; i<wadEntry->numberOfMaps; i++) {
@@ -146,7 +161,7 @@ void MapStatistics::processGameplay(MapEntry* mapEntry)
 		intStats[STS_TOTALHP_MIN] = mapEntry->totalHP;
 	if (mapEntry->totalHP > intStats[STS_TOTALHP_MAX])
 		intStats[STS_TOTALHP_MAX] = mapEntry->totalHP;
-	
+
 	floatStats[STS_HEALTHRAT_AVG] += mapEntry->healthRatio;
 	if (mapEntry->healthRatio < floatStats[STS_HEALTHRAT_MIN])
 		floatStats[STS_HEALTHRAT_MIN] = mapEntry->healthRatio;
@@ -162,18 +177,18 @@ void MapStatistics::processGameplay(MapEntry* mapEntry)
 		floatStats[STS_AMMORAT_MIN] = mapEntry->ammoRatio;
 	if (mapEntry->ammoRatio > floatStats[STS_AMMORAT_MAX])
 		floatStats[STS_AMMORAT_MAX] = mapEntry->ammoRatio;
-	
+
 	if (mapEntry->flags&MF_SPAWN) intStats[STS_MF_SPAWN]++;
 	if (mapEntry->flags&MF_MORESPAWN) intStats[STS_MF_MORESPAWN]++;
 }
 
 void MapStatistics::computeResults()
 {
-	if (intStats[STS_COUNT] > 0) {
-		floatStats[STS_LINEDEFS_AVG] = (double)intStats[STS_LINEDEFS]/(double)intStats[STS_COUNT];
-		floatStats[STS_SECTORS_AVG] = (double)intStats[STS_SECTORS]/(double)intStats[STS_COUNT];
-		floatStats[STS_THINGS_AVG] = (double)intStats[STS_THINGS]/(double)intStats[STS_COUNT];
-		floatStats[STS_SECRETS_AVG] = (double)intStats[STS_SECRETS]/(double)intStats[STS_COUNT];
+	if (intStats[STS_MAPS] > 0) {
+		floatStats[STS_LINEDEFS_AVG] = (double)intStats[STS_LINEDEFS]/(double)intStats[STS_MAPS];
+		floatStats[STS_SECTORS_AVG] = (double)intStats[STS_SECTORS]/(double)intStats[STS_MAPS];
+		floatStats[STS_THINGS_AVG] = (double)intStats[STS_THINGS]/(double)intStats[STS_MAPS];
+		floatStats[STS_SECRETS_AVG] = (double)intStats[STS_SECRETS]/(double)intStats[STS_MAPS];
 	} else {
 		intStats[STS_LINEDEFS_MIN] = 0;
 		intStats[STS_SECTORS_MIN] = 0;
@@ -186,7 +201,7 @@ void MapStatistics::computeResults()
 		floatStats[STS_AREA_AVG] = floatStats[STS_AREA_AVG]/(double)intStats[STS_AREAS];
 	else
 		floatStats[STS_AREA_MIN] = 0.0;
-	
+
 	if (intStats[STS_GAMESTATS] > 0) {
 		floatStats[STS_ENEMIES_AVG] = (double)intStats[STS_ENEMIES]/(double)intStats[STS_GAMESTATS];
 		floatStats[STS_TOTALHP_AVG] = (double)intStats[STS_TOTALHP]/(double)intStats[STS_GAMESTATS];
@@ -200,7 +215,7 @@ void MapStatistics::computeResults()
 		floatStats[STS_ARMORRAT_MIN] = 0.0;
 		floatStats[STS_AMMORAT_MIN] = 0.0;
 	}
-	
+
 	if (intStats[STS_OWNRATED] > 0)
 		floatStats[STS_OWNRATING_AVG] = (double)intStats[STS_OWNRATING]/(double)intStats[STS_OWNRATED];
 }
@@ -208,93 +223,93 @@ void MapStatistics::computeResults()
 void MapStatistics::printReport(TextReport* reportView)
 {
 	reportView->writeHeading(heading);
-	//long lng = intStats[STS_COUNT];
-	reportView->writeLine(wxString::Format("Total maps: %u", intStats[STS_COUNT]));
+	//long lng = intStats[STS_MAPS];
+	reportView->writeLine(wxString::Format("Total maps: %u", intStats[STS_MAPS]));
 	reportView->writeLine(wxString::Format("Year range: %i - %i", intStats[STS_YEAR_MIN], intStats[STS_YEAR_MAX]));
-	
+
 	reportView->writeSubHeading("Counts");
 	wxArrayInt tabs;
 	tabs.Add(450);tabs.Add(650);tabs.Add(850);tabs.Add(1050);
 	reportView->setTabs(tabs);
 	reportView->writeText("Played\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_PLAYED]));
-	double percent = (double)(intStats[STS_PLAYED]*100) / (double)intStats[STS_COUNT];
+	double percent = (double)(intStats[STS_PLAYED]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Made for single player\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_SINGLE]));
-	percent = (double)(intStats[STS_SINGLE]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_SINGLE]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Made for coop\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_COOP]));
-	percent = (double)(intStats[STS_COOP]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_COOP]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Made for deathmatch\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_DM]));
-	percent = (double)(intStats[STS_DM]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_DM]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
-	
+
 	reportView->writeText("Have file\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_OF_HAVEFILE]));
-	percent = (double)(intStats[STS_OF_HAVEFILE]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_OF_HAVEFILE]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("In IWAD\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_IWAD]));
-	percent = (double)(intStats[STS_WF_IWAD]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_IWAD]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Sprites\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_SPRITES]));
-	percent = (double)(intStats[STS_WF_SPRITES]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_SPRITES]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Textures\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_TEX]));
-	percent = (double)(intStats[STS_WF_TEX]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_TEX]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Other graphics\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_GFX]));
-	percent = (double)(intStats[STS_WF_GFX]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_GFX]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Palette\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_COLOR]));
-	percent = (double)(intStats[STS_WF_COLOR]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_COLOR]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Sounds\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_SOUND]));
-	percent = (double)(intStats[STS_WF_SOUND]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_SOUND]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Music\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_MUSIC]));
-	percent = (double)(intStats[STS_WF_MUSIC]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_MUSIC]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Dehacked/BEX\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_DEHBEX]));
-	percent = (double)(intStats[STS_WF_DEHBEX]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_DEHBEX]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Monsters/items\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_THINGS]));
-	percent = (double)(intStats[STS_WF_THINGS]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_THINGS]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Scripts\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_SCRIPT]));
-	percent = (double)(intStats[STS_WF_SCRIPT]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_SCRIPT]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("GL nodes\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_WF_GLNODES]));
-	percent = (double)(intStats[STS_WF_GLNODES]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_WF_GLNODES]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
-	
+
 	reportView->writeText("Difficulty settings\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_MF_DIFFSET]));
-	percent = (double)(intStats[STS_MF_DIFFSET]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_MF_DIFFSET]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Voodoo dolls\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_MF_VOODOO]));
-	percent = (double)(intStats[STS_MF_VOODOO]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_MF_VOODOO]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
 	reportView->writeText("Unknown things\t");
 	reportView->writeText(wxString::Format("%i\t", intStats[STS_MF_UNKNOWN]));
-	percent = (double)(intStats[STS_MF_UNKNOWN]*100) / (double)intStats[STS_COUNT];
+	percent = (double)(intStats[STS_MF_UNKNOWN]*100) / (double)intStats[STS_MAPS];
 	reportView->writeLine(wxString::Format("%.1f%", percent));
-	
+
 	reportView->writeSubHeading("Geometry statistics");
 	reportView->writeLine("\tTotal\tAverage\tMin\tMax");
 	reportView->writeText("Linedefs\t");
@@ -323,7 +338,7 @@ void MapStatistics::printReport(TextReport* reportView)
 	reportView->writeLine(wxString::Format("%.3f", floatStats[STS_AREA_MAX]));
 	reportView->writeLine(wxString::Format("Maps with computed area: %i",
 			intStats[STS_AREAS]));
-	
+
 	reportView->writeSubHeading("Gameplay statistics");
 	reportView->writeLine("\tTotal\tAverage\tMin\tMax");
 	reportView->writeText("Enemies\t");
@@ -354,7 +369,7 @@ void MapStatistics::printReport(TextReport* reportView)
 	reportView->writeLine(wxString::Format("%i", intStats[STS_MF_MORESPAWN]));
 	reportView->writeLine(wxString::Format("Maps with gameplay stats: %i",
 			intStats[STS_GAMESTATS]));
-	
+
 	reportView->writeSubHeading("Ratings");
 	reportView->writeLine(wxString::Format("Rated maps: %i",
 			intStats[STS_OWNRATED]));
