@@ -22,6 +22,10 @@ A binary for Windows is available under [releases](https://github.com/larsboy/DM
 
 See the [wiki for a detailed user guide](https://github.com/larsboy/DMDB/wiki).
 
+The binary comes with a sample database, which is the result of using DMDB on a dump of idgames/levels from March 1st 2020. This database has more than 12,000 wad entries and 42,000 map entries, but is only the result of the wad analysis, so it does not contain human input. The version included with the binary also does not contain map images, to keep the file size small.
+
+A version of the idgames database with map images for all entries is [available here](https://drive.google.com/file/d/1Umo2YD62WRIGxOOFnvWg_3MIafeUe2V5/view?usp=sharing).
+
 ## Implementation notes
 One of my motivations for the project was to make something in C++. While I am a programmer, I have never worked professionally with C/C++. I did NOT choose C++ because it was suitable for the task or something I knew how to do - rather the opposite, it was an interesting challenge. I wanted a traditional desktop application with windows, as I think that is perfectly suited to a database application. I chose to use wxWidgets, as it is a mature library and supports multiple platforms. I only work in Windows and so that is what the initial version is for. I have tried to be platform-independent, and so it shouldn't be too much work to get it to compile for Linux and Mac as well, although there will be some small things to fix. I also wanted to implement as much as possible myself, so I don't use any database back end - the database implementation is all coded for this application. The core database - the wad and map entries - is very compact. On average about 100 bytes per map entry and 70 bytes per wad entry. So the complete core database should always fit in memory, even with a million maps. The analysis of wads and archives could probably be given better performance. Beware that big UDMF maps can take a long time to process, as these are all text which needs to be parsed.
 
