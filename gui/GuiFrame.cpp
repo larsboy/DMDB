@@ -802,7 +802,7 @@ void GuiFrame::onExit(wxCommandEvent& event)
 void GuiFrame::onStatsTotal(wxCommandEvent& event)
 {
 	MapStatistics* stats = dataBase->getStatistics(mapList->getCurrentType());
-	StatisticsReport* report = new StatisticsReport(this, getDialogPos(300,400), stats);
+	StatisticsReport* report = new StatisticsReport(this, getDialogPos(400,400), stats);
 	int result = report->ShowModal();
 	report->Destroy();
 	delete stats;
@@ -883,7 +883,7 @@ void GuiFrame::onStatsTags(wxCommandEvent& event)
 void GuiFrame::onWadStatsTotal(wxCommandEvent& event)
 {
 	WadStatistics* stats = dataBase->getWadStatistics();
-	StatisticsReport* report = new StatisticsReport(this, getDialogPos(300,400), stats);
+	StatisticsReport* report = new StatisticsReport(this, getDialogPos(400,400), stats);
 	int result = report->ShowModal();
 	report->Destroy();
 	delete stats;

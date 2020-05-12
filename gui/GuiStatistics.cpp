@@ -5,7 +5,7 @@
 //******************************************************************
 
 StatisticsReport::StatisticsReport(wxWindow* parent, const wxPoint& pos, DBStatistics* stats)
-: GuiReport(parent, "Statistics", pos, wxSize(500,400))
+: GuiReport(parent, "Statistics", pos, wxSize(560,400))
 {
 	//Main layout objects:
 	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
