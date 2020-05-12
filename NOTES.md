@@ -25,7 +25,8 @@ Here is an overview of all the source code (most points are .h and .cpp file), o
 * DataFilter: To select subsets of wad and map entries.
 * DataManager: Manages all data objects and their file persistence.
 * MapStatistics: Represents and computes statistics for a set of maps.
-* StatisticSet: Tables with MapStatistics objects based on different categories.
+* WadStatistics: Statistics class for a set of wads.
+* StatisticSet: Tables with MapStatistics or WadStatistics objects based on different categories.
 
 ### File analysis
 * ThingDef: Defines map things, for map analysis.
@@ -65,7 +66,7 @@ Here is an overview of all the source code (most points are .h and .cpp file), o
 * GuiWadEntry: Window for displaying or editing all fields of wad entries.
 * GuiMapEntry: Window for displaying or editing all fields of map entries.
 * GuiComboEntry: Window for displaying or editing a wad entry and its map entries.
-* GuiStatistics: Dialogs showing StatisticSet and MapStatistics.
+* GuiStatistics: Dialogs showing StatisticSet and Map/WadStatistics.
 
 ## Database files & folders
 ```
