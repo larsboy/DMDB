@@ -2,10 +2,9 @@
 Source code notes
 
 ## Build notes
-Currently using wxWidgets version 3.1.0.  
-So far only for Windows. The code is mostly platform-independent, but there will be some details which needs fixing to build for other platforms supported by wxWidgets.  
-The source includes project setup for Code::Blocks IDE: http://www.codeblocks.org/  
-Set up to compile with GNU GCC.  
+While originally made with Code::Blocks IDE and GNU GCC, I have now switched to Visual Studio. Visual Studio project files are included in the repo. This should make it easy for other Windows programmers to work with the project. The project is currently configured with environment variable WXWIN, which must point to the wxWidgets folder.
+Currently using wxWidgets version 3.1.5.  
+So far only for Windows. The code is mostly platform-independent, but there will be some details which needs fixing to build for other platforms supported by wxWidgets.
 
 ## Source file guide
 Here is an overview of all the source code (most points are .h and .cpp file), organised in some main parts:
