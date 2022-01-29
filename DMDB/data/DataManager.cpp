@@ -818,7 +818,7 @@ void DataManager::loadAuthors()
 	uint16_t l;
 	char buf[256];
 	AuthorEntry* entry;
-	AuthorGroupEntry* group;
+	AuthorGroupEntry* group = NULL;
 	vector<AuthorGroupEntry*> groupList;
 	while (!file.Eof()) {
 		file.Read(&type, 1);
@@ -2731,7 +2731,7 @@ bool DataManager::loadDataFilters()
 		throw GuiError("List database file has unsupported version number", FILE_VIEWS);
 
 	DataFilter* filter;
-	DataListFilter* dlv;
+	DataListFilter* dlv = NULL;
 	uint16_t l;
 	char buf[128];
 	unsigned char fld;

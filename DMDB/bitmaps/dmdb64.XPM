@@ -1,5 +1,5 @@
 /* XPM */
-static char *_dmdb[] = {
+static const char *_dmdb[] = {
 /* columns rows colors chars-per-pixel */
 "64 64 255 2 ",
 "   c black",

@@ -198,7 +198,7 @@ class ThingDefList
 	/*!
 	* Returns the number of ThingDef objects in the list.
 	*/
-	int size() { (thingDefs==NULL)? 0: thingDefs->size(); }
+	int size() { return (thingDefs==NULL)? 0: thingDefs->size(); }
 
 	/*!
 	* true if any contained ThingDef has the modified flag set.

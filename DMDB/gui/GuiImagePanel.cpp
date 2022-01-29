@@ -86,6 +86,7 @@ bool GuiImagePanel::createImage()
 		SetScrollRate(10, 10);
 	}
 	paintNow();
+	return true;
 }
 
 void GuiImagePanel::selectFile()

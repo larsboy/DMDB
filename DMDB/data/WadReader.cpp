@@ -835,8 +835,8 @@ void WadReader::drawMap(MapStats* mapStats, wxDC& dc)
 	dc.SetBackground(bckgrnd);
 	dc.Clear();
 
-	wxPen wall1Pen(MAP_WALL1, 1, wxSOLID);
-	wxPen wall2Pen(MAP_WALL2, 1, wxSOLID);
+	wxPen wall1Pen(MAP_WALL1, 1, wxPENSTYLE_SOLID);
+	wxPen wall2Pen(MAP_WALL2, 1, wxPENSTYLE_SOLID);
 
 	vector<Vertex>* vertices = mapStats->getVertices();
 	vector<MapLine>* lines = mapStats->getLines();

@@ -10,6 +10,6 @@
 top_icon ICON "bitmaps/dmdb.ico"
 
 //This must come AFTER the application icon
-#include "wx/msw/wx.rc"
+//#include "wx/msw/wx.rc"
 
 //Other bitmaps...

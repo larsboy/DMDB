@@ -1,5 +1,5 @@
 /* XPM */
-static char *_diradd[] = {
+static const char *_diradd[] = {
 /* columns rows colors chars-per-pixel */
 "32 32 90 1 ",
 "  c #3E5300",

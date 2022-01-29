@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="data\DataFilter.h" />
+    <ClInclude Include="data\DataManager.h" />
+    <ClInclude Include="data\DataModel.h" />
+    <ClInclude Include="data\DecorateParser.h" />
+    <ClInclude Include="data\DehackedParser.h" />
+    <ClInclude Include="data\HexenMapStats.h" />
+    <ClInclude Include="data\IncludeParser.h" />
+    <ClInclude Include="data\MapinfoParser.h" />
+    <ClInclude Include="data\MapStatistics.h" />
+    <ClInclude Include="data\MapStats.h" />
+    <ClInclude Include="data\md5.h" />
+    <ClInclude Include="data\NodeStats.h" />
+    <ClInclude Include="data\Pk3Stats.h" />
+    <ClInclude Include="data\StatisticSet.h" />
+    <ClInclude Include="data\TaskProgress.h" />
+    <ClInclude Include="data\TextLumpParser.h" />
+    <ClInclude Include="data\ThingDef.h" />
+    <ClInclude Include="data\UdmfMapStats.h" />
+    <ClInclude Include="data\WadArchive.h" />
+    <ClInclude Include="data\WadReader.h" />
+    <ClInclude Include="data\WadStatistics.h" />
+    <ClInclude Include="data\WadStats.h" />
+    <ClInclude Include="GuiMain.h" />
+    <ClInclude Include="gui\GuiAspectDialog.h" />
+    <ClInclude Include="gui\GuiBase.h" />
+    <ClInclude Include="gui\GuiComboDialog.h" />
+    <ClInclude Include="gui\GuiEntryList.h" />
+    <ClInclude Include="gui\GuiFrame.h" />
+    <ClInclude Include="gui\GuiImagePanel.h" />
+    <ClInclude Include="gui\GuiMapCommon.h" />
+    <ClInclude Include="gui\GuiMapEntry.h" />
+    <ClInclude Include="gui\GuiMapManager.h" />
+    <ClInclude Include="gui\GuiMapPanel.h" />
+    <ClInclude Include="gui\GuiMapReport.h" />
+    <ClInclude Include="gui\GuiMapSelect.h" />
+    <ClInclude Include="gui\GuiMinorDialogs.h" />
+    <ClInclude Include="gui\GuiPersonDialogs.h" />
+    <ClInclude Include="gui\GuiProgress.h" />
+    <ClInclude Include="gui\GuiSettings.h" />
+    <ClInclude Include="gui\GuiStatistics.h" />
+    <ClInclude Include="gui\GuiTagDialogs.h" />
+    <ClInclude Include="gui\GuiThingDef.h" />
+    <ClInclude Include="gui\GuiViewSelect.h" />
+    <ClInclude Include="gui\GuiWadEntry.h" />
+    <ClInclude Include="gui\GuiWadManager.h" />
+    <ClInclude Include="gui\GuiWadPanel.h" />
+    <ClInclude Include="gui\GuiWadReport.h" />
+    <ClInclude Include="LtbUtils.h" />
+    <ClInclude Include="TextReport.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="data\DataFilter.cpp" />
+    <ClCompile Include="data\DataManager.cpp" />
+    <ClCompile Include="data\DataModel.cpp" />
+    <ClCompile Include="data\DecorateParser.cpp" />
+    <ClCompile Include="data\DehackedParser.cpp" />
+    <ClCompile Include="data\HexenMapStats.cpp" />
+    <ClCompile Include="data\IncludeParser.cpp" />
+    <ClCompile Include="data\MapinfoParser.cpp" />
+    <ClCompile Include="data\MapStatistics.cpp" />
+    <ClCompile Include="data\MapStats.cpp" />
+    <ClCompile Include="data\md5.cpp" />
+    <ClCompile Include="data\NodeStats.cpp" />
+    <ClCompile Include="data\Pk3Stats.cpp" />
+    <ClCompile Include="data\StatisticSet.cpp" />
+    <ClCompile Include="data\TaskProgress.cpp" />
+    <ClCompile Include="data\TextLumpParser.cpp" />
+    <ClCompile Include="data\ThingDef.cpp" />
+    <ClCompile Include="data\UdmfMapStats.cpp" />
+    <ClCompile Include="data\WadArchive.cpp" />
+    <ClCompile Include="data\WadReader.cpp" />
+    <ClCompile Include="data\WadStatistics.cpp" />
+    <ClCompile Include="data\WadStats.cpp" />
+    <ClCompile Include="GuiMain.cpp" />
+    <ClCompile Include="gui\GuiAspectDialog.cpp" />
+    <ClCompile Include="gui\GuiBase.cpp" />
+    <ClCompile Include="gui\GuiComboDialog.cpp" />
+    <ClCompile Include="gui\GuiEntryList.cpp" />
+    <ClCompile Include="gui\GuiFrame.cpp" />
+    <ClCompile Include="gui\GuiImagePanel.cpp" />
+    <ClCompile Include="gui\GuiMapCommon.cpp" />
+    <ClCompile Include="gui\GuiMapEntry.cpp" />
+    <ClCompile Include="gui\GuiMapManager.cpp" />
+    <ClCompile Include="gui\GuiMapPanel.cpp" />
+    <ClCompile Include="gui\GuiMapReport.cpp" />
+    <ClCompile Include="gui\GuiMapSelect.cpp" />
+    <ClCompile Include="gui\GuiMinorDialogs.cpp" />
+    <ClCompile Include="gui\GuiPersonDialogs.cpp" />
+    <ClCompile Include="gui\GuiProgress.cpp" />
+    <ClCompile Include="gui\GuiSettings.cpp" />
+    <ClCompile Include="gui\GuiStatistics.cpp" />
+    <ClCompile Include="gui\GuiTagDialogs.cpp" />
+    <ClCompile Include="gui\GuiThingDef.cpp" />
+    <ClCompile Include="gui\GuiViewSelect.cpp" />
+    <ClCompile Include="gui\GuiWadEntry.cpp" />
+    <ClCompile Include="gui\GuiWadManager.cpp" />
+    <ClCompile Include="gui\GuiWadPanel.cpp" />
+    <ClCompile Include="gui\GuiWadReport.cpp" />
+    <ClCompile Include="LtbUtils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bitmaps\add.XPM" />
+    <None Include="bitmaps\closed.XPM" />
+    <None Include="bitmaps\cog.XPM" />
+    <None Include="bitmaps\diradd.XPM" />
+    <None Include="bitmaps\dmdb32.XPM" />
+    <None Include="bitmaps\dmdb64.XPM" />
+    <None Include="bitmaps\open.XPM" />
+    <None Include="bitmaps\people.XPM" />
+    <None Include="bitmaps\tags.XPM" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bitmaps\dmdb.ico" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{1D30C2D4-9A08-4F96-88A2-249838FF4F42}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DMDB</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(WXWIN)\include;$(WXWIN)\include\msvc</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -54,7 +54,7 @@ void NodeDraw::setup(Vector2D& minXY, Vector2D& maxXY)
 	wxBrush bckgrnd(DRAW_BACKGROUND);
 	dc->SetBackground(bckgrnd);
 	dc->Clear();
-	wxPen pen(DRAW_FOREGROUND, 1, wxSOLID);
+	wxPen pen(DRAW_FOREGROUND, 1, wxPENSTYLE_SOLID);
 	dc->SetPen(pen);
 }
 

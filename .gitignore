@@ -33,3 +33,9 @@
 obj
 DMDB.layout
 DMDB.depend
+.vs
+Debug
+DMDB/DMDB.vcxproj.user
+DMDB/RCa02928
+DMDB/RCa12768
+DMDB/resource.aps
