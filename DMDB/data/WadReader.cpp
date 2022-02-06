@@ -754,6 +754,8 @@ MapStats* WadReader::loadMap(WadContentX* mapEntry, TaskProgress* tp)
 		result = new UdmfMapStats(mapEntry->lumps->at(0)->name, engine, tp);
 	else if (hexenFormat)
 		result = new HexenMapStats(mapEntry->lumps->at(0)->name, engine, tp);
+	else if (engine == DENG_DOOM64)
+		result = new MapStats64(mapEntry->lumps->at(0)->name, engine, tp);
 	else
 		result = new MapStats(mapEntry->lumps->at(0)->name, engine, tp);
 	map<int, ThingDef*>* tm = (thingDefs==NULL)? NULL: thingDefs->getMapPointer();

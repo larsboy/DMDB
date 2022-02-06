@@ -404,12 +404,26 @@ void WadStats::processMarkerLump(DirEntry* lump, const wxString& lname)
 		if (content[WFONT] == NULL)
 			content[WFONT] = new WadContent(WFONT);
 		content[WFONT]->markerStack++;
-	} else if (lname.Matches("FONT*_E")) {
+	}
+	else if (lname.Matches("FONT*_E")) {
 		wxLogVerbose("End marker for FONT");
-		if (content[WFONT]==NULL || content[WFONT]->markerStack==0) {
+		if (content[WFONT] == NULL || content[WFONT]->markerStack == 0) {
 			lumpError("FONT end marker without start", lump);
 		} else {
 			content[WFONT]->markerStack--;
+		}
+	} else if (lname.IsSameAs("T_START")) {
+		wxLogVerbose("Start marker for D64 TEXTURES");
+		if (content[WTX] == NULL)
+			content[WTX] = new WadContent(WTX);
+		content[WTX]->markerStack++;
+		engine = DENG_DOOM64;
+	} else if (lname.IsSameAs("T_END")) {
+		wxLogVerbose("End marker for D64 TEXTURES");
+		if (content[WTX] == NULL || content[WTX]->markerStack == 0) {
+			lumpError("T_END marker without start", lump);
+		} else {
+			content[WTX]->markerStack--;
 		}
 	} else if (lname.IsSameAs("TX_START")) {
 		wxLogVerbose("Start marker for TEXTURES");
@@ -426,6 +440,10 @@ void WadStats::processMarkerLump(DirEntry* lump, const wxString& lname)
 		}
 	} else if (lname.Matches("*_START") || lname.Matches("*_END")) {
 		wxLogVerbose("Unknown marker %s", lname);
+	} else if (lname.IsSameAs("ENDOFWAD")) {
+		wxLogVerbose("End marker for DOOM64 iwad");
+		engine = DENG_DOOM64;
+		iwad = IWAD_DOOM64;
 	} else if (lname.StartsWith("_")) {
 		//Comment marker
 	} else if (lname.Length()==0) {
@@ -871,6 +889,24 @@ void WadStats::processLump(DirEntry* lump, wxInputStream* file)
 			//UDMF
 			currentMap->addLump(lump);
 			if (engine<DENG_ZDOOM) engine=DENG_ZDOOM;
+			return;
+		}
+		if (lname.IsSameAs("LEAFS") || lname.IsSameAs("LIGHTS")) {
+			//Doom64/PS
+			currentMap->addLump(lump);
+			if (engine < DENG_PLAYSTATION) engine = DENG_PLAYSTATION;
+			return;
+		}
+		if (lname.IsSameAs("MACROS")) {
+			//Doom64 script
+			currentMap->addLump(lump);
+			engine = DENG_DOOM64;
+			iwad = IWAD_DOOM64;
+			if (lump->size > 0) {
+				if (content[WBEHAVIOR] == NULL)
+					content[WBEHAVIOR] = new WadContent(WBEHAVIOR);
+				content[WBEHAVIOR]->addLump(lump);
+			}
 			return;
 		}
 		if ((currentMap->lumps!=NULL) && (currentMap->lumps->size()>0)) {

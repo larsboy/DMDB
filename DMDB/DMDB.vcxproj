@@ -29,6 +29,7 @@
     <ClInclude Include="data\MapinfoParser.h" />
     <ClInclude Include="data\MapStatistics.h" />
     <ClInclude Include="data\MapStats.h" />
+    <ClInclude Include="data\MapStats64.h" />
     <ClInclude Include="data\md5.h" />
     <ClInclude Include="data\NodeStats.h" />
     <ClInclude Include="data\Pk3Stats.h" />
@@ -80,6 +81,7 @@
     <ClCompile Include="data\MapinfoParser.cpp" />
     <ClCompile Include="data\MapStatistics.cpp" />
     <ClCompile Include="data\MapStats.cpp" />
+    <ClCompile Include="data\MapStats64.cpp" />
     <ClCompile Include="data\md5.cpp" />
     <ClCompile Include="data\NodeStats.cpp" />
     <ClCompile Include="data\Pk3Stats.cpp" />

@@ -209,6 +209,7 @@ enum IwadType {
 	IWAD_SQUARE,
 	IWAD_HARMONY,
 	IWAD_RISEWOOL,
+	IWAD_DOOM64,
 	IWAD_END
 };
 
@@ -230,7 +231,8 @@ const wxString iwadNames[] = {
 	"Action Doom 2",
 	"Adventures of Square",
 	"Harmony",
-	"Rise Of The Wool Ball"
+	"Rise Of The Wool Ball",
+	"Doom 64"
 };
 
 /*!
@@ -249,6 +251,8 @@ enum EngineType {
 	DENG_ZDOOM,
 	DENG_GZDOOM,
 	DENG_SKULLTAG,
+	DENG_PLAYSTATION,
+	DENG_DOOM64,
 	//ETERNITY
 	//DOOMSDAY
 	//RISEN3D
@@ -267,7 +271,9 @@ const wxString engineNames[] = {
 	"Legacy",
 	"ZDoom",
 	"GZDoom",
-	"Skulltag"
+	"Skulltag",
+	"Playstation",
+	"Doom 64"
 };
 
 /*!

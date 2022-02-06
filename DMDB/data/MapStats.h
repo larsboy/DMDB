@@ -209,9 +209,9 @@ class MapStats
 	protected:
 		DirEntry* findLump(const string& name, vector<DirEntry*>* lumps);
 		virtual void processThings(wxInputStream* file, int32_t lsize, map<int, ThingDef*>* thingDefs);
-		void processVertexes(wxInputStream* file, int32_t lsize);
+		virtual void processVertexes(wxInputStream* file, int32_t lsize);
 		virtual void processLinedefs(wxInputStream* file, int32_t lsize);
-		void processSidedefs(wxInputStream* file, int32_t lsize);
+		virtual void processSidedefs(wxInputStream* file, int32_t lsize);
 		virtual void processSectors(wxInputStream* file, int32_t lsize);
 		void processReject(wxInputStream* file, int32_t lsize);
 		void processBlockmap(wxInputStream* file, int32_t lsize);

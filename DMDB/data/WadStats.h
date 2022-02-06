@@ -83,6 +83,7 @@ enum WadContentType
 	* Hexen/Zdoom: BEHAVIOR, optionally SCRIPTS / SCRIPTxx.
 	* GL node lumps.
 	* UDMF: TEXTMAP, DIALOGUE, ZNODES.
+	* DOOM64: LEAFS, LIGHTS, MACROS
 	*/
 	WMAP,
 
@@ -91,7 +92,7 @@ enum WadContentType
 	WPATCH, //!< Images between P*_START and P*_END markers
 	WFLAT, //!< Images (flats) between F*_START and F*_END markers
 	WFONT, //!< Font gfx between FONT*_S and FONT*_E markers
-	WTX, //!< ZDoom: Textures between TX_START and TX_END markers
+	WTX, //!< ZDoom: Textures between TX_START and TX_END markers, D64: Textures between T_START and T_END markers
 	WGFX, //!< Other Doom-format images (not in markers)
 	WBITMAP, //!< Raw bitmap images, other than flats
 	WPNAMES, //!< PNAMES lump listing patches, count is entries in list

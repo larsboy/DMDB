@@ -109,6 +109,7 @@ DirEntry* MapStats::findLump(const string& name, vector<DirEntry*>* lumps)
 void MapStats::readFile(wxInputStream* file, vector<DirEntry*>* lumps, map<int, ThingDef*>* thingDefs)
 {
 	wxLogVerbose("Processing map %s with %i lumps", mapName, lumps->size());
+	secrets = 0;
 	progress->startCount(MAP_PROGRESS_STEPS);
 	//progress has MAP_PROGRESS_STEPS = 100
 	DirEntry* lump;
@@ -461,7 +462,6 @@ void MapStats::processSectors(wxInputStream* file, int32_t lsize)
 {
 	sectors = lsize/26;
 	wxLogVerbose("Processing SECTORS - %i entries", sectors);
-	secrets = 0;
 	lightSum = 0.0;
 	int16_t light;
 	uint16_t effect;
@@ -502,7 +502,8 @@ void MapStats::processBlockmap(wxInputStream* file, int32_t lsize)
 
 void MapStats::findNodeType(wxInputStream* file, int32_t lsize)
 {
-	if (lsize < 8) {
+	//Nodes for Doom 64?
+	if (lsize < 8 || engine == DENG_DOOM64) {
 		nodeStats = NULL;
 		return;
 	}

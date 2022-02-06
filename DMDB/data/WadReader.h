@@ -29,6 +29,7 @@
 #include "MapStats.h"
 #include "HexenMapStats.h"
 #include "UdmfMapStats.h"
+#include "MapStats64.h"
 #include "DehackedParser.h"
 #include "DataModel.h"
 

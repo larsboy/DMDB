@@ -96,7 +96,6 @@ void HexenMapStats::processSectors(wxInputStream* file, int32_t lsize)
 {
 	sectors = lsize/26;
 	wxLogVerbose("Processing SECTORS - %i entries", sectors);
-	secrets = 0;
 	lightSum = 0.0;
 	int16_t light;
 	uint16_t effect;
