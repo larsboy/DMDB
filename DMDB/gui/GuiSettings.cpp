@@ -81,6 +81,10 @@ ApplicationSettings::ApplicationSettings()
 	flagRegKeys[UI_COMBOMAP] = "UI_COMBOMAP";
 	flagDescriptions[UI_COMBOMAP] = "Open maps in combined dialog (wad+maps)";
 
+	flags[DB_EDITMODE] = defaultFlags[DB_EDITMODE] = false;
+	flagRegKeys[DB_EDITMODE] = "DB_EDITMODE";
+	flagDescriptions[DB_EDITMODE] = "Edit mode";
+
 	//Defining numerical settings:
 	values[DB_AUTHORNAME] = defaultValues[DB_AUTHORNAME] = 0;
 	minValues[DB_AUTHORNAME] = 0; maxValues[DB_AUTHORNAME] = 2; //AuthorNaming enum

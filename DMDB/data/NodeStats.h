@@ -65,14 +65,15 @@ struct PairUint {
 
 /*!
 * A line in map geometry is defined by the vertices at either
-* end. It indexes the list of Vertex objects.
+* end. It indexes the list of Vertex objects. Vertex index
+* increased to 32-bit to fit all formats.
 */
 struct MapLine {
-	uint16_t v1; //!< Start vertex - index in Vertex list
-	uint16_t v2; //!< End vertex - index in Vertex list
+	uint32_t v1; //!< Start vertex - index in Vertex list
+	uint32_t v2; //!< End vertex - index in Vertex list
 	bool twoSided; //!< Two-sided line flag
 
-	MapLine(uint16_t vv1 = 0, uint16_t vv2 = 0, bool two = false)
+	MapLine(uint32_t vv1 = 0, uint32_t vv2 = 0, bool two = false)
 	: v1(vv1), v2(vv2), twoSided(two) {}
 };
 

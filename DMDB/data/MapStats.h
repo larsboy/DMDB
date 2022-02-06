@@ -233,7 +233,7 @@ class MapStats
 		uint16_t thingCounts[THING_END];
 		ThingStats* thingStats[3]; //For each difficulty
 		vector<Vertex>* vertices; //All vertices, including for segs
-		uint16_t lineVertices; //Vertices used by linedefs
+		uint32_t lineVertices; //Vertices used by linedefs
 		Vertex minCorner; //Lowest x and y
 		Vertex maxCorner; //Highest x and y
 		vector<MapLine>* lines; //From linedefs

@@ -66,7 +66,7 @@ AboutDialog::AboutDialog(wxWindow* parent, const wxPoint& pos)
 	topSizer->Add(new wxStaticText(this,-1,APP_TITLE),0,wxALL|wxALIGN_CENTER,8);
 	wxStaticBitmap* aboutIcon = new wxStaticBitmap(this,-1,wxBitmap(_dmdb));
 	topSizer->Add(aboutIcon,0,wxALL|wxALIGN_CENTER,10);
-	topSizer->Add(new wxStaticText(this,-1,VERSIONSTRING+" (2020)"),0,wxALL|wxALIGN_CENTER,8);
+	topSizer->Add(new wxStaticText(this,-1,VERSIONSTRING+" (2022)"),0,wxALL|wxALIGN_CENTER,8);
 	topSizer->Add(new wxStaticText(this,-1,"Coded in C++ using wxWidgets"),0,wxALL|wxALIGN_CENTER,10);
 	topSizer->Add(new wxStaticText(this,-1,"By Lars Thomas Boye"),0,wxALL|wxALIGN_CENTER,10);
 	topSizer->Add(new wxStaticText(this,-1,"Dedicated to"),0,wxTop|wxALIGN_CENTER,10);

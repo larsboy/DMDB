@@ -38,6 +38,7 @@ enum boolSetElems {
 	UI_LOGPANEL,        //!< Show log panel
 	UI_COMBOWAD,		//!< Use combined wad+map dialog for wad entries
 	UI_COMBOMAP,		//!< Use combined wad+map dialog for map entries
+	DB_EDITMODE,		//!< Can edit core DB entries
 	ENDOF_BOOLSETELEMS
 };
 

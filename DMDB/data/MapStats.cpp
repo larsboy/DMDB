@@ -413,7 +413,7 @@ void MapStats::processLinedefs(wxInputStream* file, int32_t lsize)
 	lines = new vector<MapLine>();
 	lines->reserve(num);
 	lineLength = 0.0;
-	uint16_t vMin = 30000;
+	uint16_t vMin = 32000;
 	uint16_t vMax = 0;
 	uint16_t v1, v2;
 	uint16_t flags;

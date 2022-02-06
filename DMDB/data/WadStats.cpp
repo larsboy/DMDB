@@ -207,21 +207,21 @@ void WadStats::readFile(TaskProgress* progress, bool findMd5)
 
 	vector<DirEntry*> directory(numberOfLumps);
 	wxFileInputStream* fileStream = new wxFileInputStream(file);
-	wxBufferedInputStream buf(*fileStream, 1024); //16*numberOfLumps
+	wxBufferedInputStream* buf = new wxBufferedInputStream(*fileStream, 1024); //16*numberOfLumps
 	bool ok = true;
 	for (int i=0; i<numberOfLumps; i++) {
 		directory[i] = new DirEntry();
-		buf.Read(lng, 4);
+		buf->Read(lng, 4);
 		directory[i]->offset = *lng;
-		buf.Read(lng, 4);
+		buf->Read(lng, 4);
 		directory[i]->size = *lng;
 		ok = true;
 		for (int j=0; j<8; j++) {
-			buf.Read(ch, 1);
+			buf->Read(ch, 1);
 			if (ok && (*ch != 0)) directory[i]->name += *ch;
 			else ok = false;
 		}
-		if ((i<(numberOfLumps-1)) && (buf.Eof())) {
+		if ((i<(numberOfLumps-1)) && (buf->Eof())) {
 			numberOfLumps = i+1;
 			progress->fatalError("Premature end of file.");
 			break;
@@ -229,6 +229,7 @@ void WadStats::readFile(TaskProgress* progress, bool findMd5)
 	}
 	delete ch;
 	delete lng;
+	delete buf;
 
 	if (progress->hasFailed()) {
 		for (int i=0; i<numberOfLumps; i++)
@@ -265,8 +266,8 @@ void WadStats::readFile(TaskProgress* progress, bool findMd5)
 			progress->warnError(wxString::Format("%i lump errors",errCount));
 		}
 	}
-	file.Close();
 	delete fileStream;
+	file.Close();
 }
 
 MapinfoParser* WadStats::getMapinfo(TaskProgress* progress)

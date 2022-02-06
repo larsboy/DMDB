@@ -39,6 +39,7 @@ wadPanel(NULL), mapPanel(NULL), consoleText(NULL), editMode(false)
 	appSettings->loadConfig(configObject);
 	SSHOT_WIDTH = appSettings->getValue(IMG_WIDTH);
 	SSHOT_HEIGHT = appSettings->getValue(IMG_HEIGHT);
+	editMode = appSettings->getFlag(DB_EDITMODE);
 
 	//Set the frame icon (icon declared in rc file, MS Windows only):
 	#if defined(__WXMSW__)
@@ -183,6 +184,8 @@ wadPanel(NULL), mapPanel(NULL), consoleText(NULL), editMode(false)
 		menuBar->enableItems(false);
 		selectDatabase();
 	}
+	menuBar->setItemState(LFILE_MODE, editMode);
+	toolbarMan->setToolState(LFILE_MODE, editMode);
 }
 
 void GuiFrame::selectDatabase()
@@ -384,6 +387,7 @@ void GuiFrame::toggleEditMode(wxCommandEvent& event)
 	editMode = !editMode;
 	menuBar->setItemState(LFILE_MODE, editMode);
 	toolbarMan->setToolState(LFILE_MODE, editMode);
+	appSettings->setFlag(DB_EDITMODE, editMode);
 }
 
 void GuiFrame::onDatabase(wxCommandEvent& event)

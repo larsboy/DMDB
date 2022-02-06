@@ -56,7 +56,7 @@ class UdmfMapStats : public MapStats
 
 		int16_t vertX, vertY;
 
-		uint16_t v1, v2;
+		uint32_t v1, v2;
 		bool twoSided;
 };
 
