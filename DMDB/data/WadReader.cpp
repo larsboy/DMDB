@@ -186,6 +186,8 @@ void WadReader::findThingDefs(TaskProgress* tp)
 			type = 1;
 	} else if (iwad == IWAD_HERETIC) {
 		type = 4;
+	} else if (iwad == IWAD_DOOM64) {
+		type = 5;
 	} else if (iwad == IWAD_SQUARE) {
 		type = 2;
 	}

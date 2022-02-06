@@ -132,6 +132,7 @@ enum ApplicationMenuEvents {
 	LTHING_ZDOOM,	//!< Open ZDoom thing defs
 	LTHING_SKULLT,	//!< Open Skulltag thing defs
 	LTHING_HERET,	//!< Open Heretic thing defs
+	LTHING_DOOM64,	//!< Open Doom64 thing defs
 	//Statistics menu:
 	LSTATS_TOTAL,	//!< Uncategorized statistics
 	LSTATS_YEARS,	//!< Categorized by year

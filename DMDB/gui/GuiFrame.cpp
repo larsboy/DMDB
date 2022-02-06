@@ -154,6 +154,7 @@ wadPanel(NULL), mapPanel(NULL), consoleText(NULL), editMode(false)
 	wadReader->setThingFile(2, appSettings->getFullPath(TDG_ZDOOM));
 	wadReader->setThingFile(3, appSettings->getFullPath(TDG_SKULLT));
 	wadReader->setThingFile(4, appSettings->getFullPath(TDG_HERET));
+	wadReader->setThingFile(5, appSettings->getFullPath(TDG_DOOM64));
 
 	WadStatAspects* aspects = new WadStatAspects();
 	configObject->SetPath("/Aspects");

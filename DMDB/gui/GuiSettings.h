@@ -59,6 +59,7 @@ enum pathSetElems {
     TDG_ZDOOM,
     TDG_SKULLT,
     TDG_HERET,
+	TDG_DOOM64,
     ENDOF_PATHSETELEMS
 };
 

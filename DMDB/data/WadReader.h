@@ -378,7 +378,7 @@ class WadReader
 	wxFileSystem* fileSystem; //Used to get wxFSFile objects for files, to get date
 	wxString tempFolder; //Temporary file storage
 	wxString failedFolder; //For files we can't process
-	wxString thingFiles[5]; //Files to load ThingDefs
+	wxString thingFiles[6]; //Files to load ThingDefs
 
 	int thingType; //Current ThingDef type: 0=None/custom, 1=Doom, 2=ZDoom, ...
 	ThingDefList* thingDefs; //Current ThingDefs

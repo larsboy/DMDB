@@ -134,6 +134,10 @@ ApplicationSettings::ApplicationSettings()
 	pathRegKeys[TDG_HERET] = "TDG_HERET";
 	pathDescriptions[TDG_HERET] = "Heretic";
 
+	paths[TDG_DOOM64] = defaultPaths[TDG_DOOM64] = "doom64.thg";
+	pathRegKeys[TDG_DOOM64] = "TDG_DOOM64";
+	pathDescriptions[TDG_DOOM64] = "Doom 64";
+
 	//Defining wad list fields (column width, or 0 to not show):
 	wadWidths[WAD_DBID] = wadWidthDefaults[WAD_DBID] = 0;
 	wadWidthKeys[WAD_DBID] = "WAD_DBID";
@@ -519,6 +523,10 @@ GuiSettingsDialog::GuiSettingsDialog(wxWindow* parent, const wxPoint& pos, Appli
 	flagBoxes[UI_COMBOMAP] = new wxCheckBox(uiPage, -1, appSettings->flagDescriptions[UI_COMBOMAP]);
 	ui1Sizer->Add(flagBoxes[UI_COMBOMAP],0);
 
+	flagBoxes[DB_EDITMODE] = new wxCheckBox(uiPage, -1, appSettings->flagDescriptions[DB_EDITMODE]);
+	ui1Sizer->Add(flagBoxes[DB_EDITMODE], 0);
+
+	ui1Sizer->AddSpacer(1);
 	ui1Sizer->AddSpacer(1);
 	ui1Sizer->AddSpacer(1);
 
@@ -587,7 +595,7 @@ GuiSettingsDialog::GuiSettingsDialog(wxWindow* parent, const wxPoint& pos, Appli
 	statText->Wrap(460);
 	pathTopSizer->Add(statText,0,wxALL|wxALIGN_LEFT,10);
 
-	wxFlexGridSizer* pathSizer = new wxFlexGridSizer(4,3,10,6);
+	wxFlexGridSizer* pathSizer = new wxFlexGridSizer(5,3,10,6);
 	wxTextCtrl* tc = new wxTextCtrl(pathPage,TDG_DOOM,"",wxDefaultPosition,wxSize(220,20),0,
         wxTextValidator(0,&pathFields[TDG_DOOM]));
 	tc->SetEditable(false);
@@ -615,6 +623,13 @@ GuiSettingsDialog::GuiSettingsDialog(wxWindow* parent, const wxPoint& pos, Appli
 	pathSizer->Add(new wxStaticText(pathPage,-1,appSettings->pathDescriptions[TDG_HERET]),0,wxALIGN_CENTER_VERTICAL);
 	pathSizer->Add(tc,0,wxALIGN_CENTER_VERTICAL);
 	pathSizer->Add(new wxButton(pathPage,LTHING_HERET,"Change"),0);
+
+	tc = new wxTextCtrl(pathPage, TDG_DOOM64, "", wxDefaultPosition, wxSize(220, 20), 0,
+		wxTextValidator(0, &pathFields[TDG_DOOM64]));
+	tc->SetEditable(false);
+	pathSizer->Add(new wxStaticText(pathPage, -1, appSettings->pathDescriptions[TDG_DOOM64]), 0, wxALIGN_CENTER_VERTICAL);
+	pathSizer->Add(tc, 0, wxALIGN_CENTER_VERTICAL);
+	pathSizer->Add(new wxButton(pathPage, LTHING_DOOM64, "Change"), 0);
 	pathTopSizer->Add(pathSizer,0,wxALL,10);
 
 	pathPage->SetSizer(pathTopSizer);
