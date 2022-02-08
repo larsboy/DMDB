@@ -503,7 +503,7 @@ void MapStats::processBlockmap(wxInputStream* file, int32_t lsize)
 void MapStats::findNodeType(wxInputStream* file, int32_t lsize)
 {
 	//Nodes for Doom 64?
-	if (lsize < 8 || engine == DENG_DOOM64) {
+	if (lsize < 8) {
 		nodeStats = NULL;
 		return;
 	}

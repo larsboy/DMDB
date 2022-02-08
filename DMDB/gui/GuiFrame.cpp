@@ -347,6 +347,7 @@ BEGIN_EVENT_TABLE(GuiFrame, wxFrame)
 	EVT_MENU(LTHING_ZDOOM, GuiFrame::onLoadThing)
 	EVT_MENU(LTHING_SKULLT, GuiFrame::onLoadThing)
 	EVT_MENU(LTHING_HERET, GuiFrame::onLoadThing)
+	EVT_MENU(LTHING_DOOM64, GuiFrame::onLoadThing)
     //Stats menu:
 	EVT_MENU(LSTATS_TOTAL, GuiFrame::onStatsTotal)
 	EVT_MENU(LSTATS_YEARS, GuiFrame::onStatsYears)
@@ -989,6 +990,8 @@ void GuiFrame::onLoadThing(wxCommandEvent& event)
 		fileName = appSettings->getFullPath(TDG_SKULLT);
 	else if (event.GetId() == LTHING_HERET)
 		fileName = appSettings->getFullPath(TDG_HERET);
+	else if (event.GetId() == LTHING_DOOM64)
+		fileName = appSettings->getFullPath(TDG_DOOM64);
 
 	if (fileName.Length() == 0) {
 		//Get filename from dialog:

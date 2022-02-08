@@ -1,4 +1,5 @@
 #include "MapStats64.h"
+#include "../LtbUtils.h"
 
 MapStats64::MapStats64(string name, EngineType eng, TaskProgress* wp)
 	: MapStats(name, eng, wp)
@@ -93,17 +94,15 @@ void MapStats64::processSidedefs(wxInputStream* file, int32_t lsize)
 	int num = lsize / 12;
 	wxLogVerbose("Processing SIDEDEFS - %i entries", num);
 	textures = new map<string, int>();
-	char name[] = { 0,0 };
+	
 	//TODO: Textures are 16-bit table indices, not strings
-
+	uint16_t texInd;
 	for (int i = 0; i < num; i++) {
 		file->SeekI(4, wxFromCurrent);
 		for (int j = 0; j < 3; j++)
 		{
-			file->Read(name, 2);
-			if (name[0] == '-')
-				continue;
-			string str(name);
+			file->Read(&texInd, 2);
+			string str = LtbUtils::intToString(texInd);
 			(*textures)[str] = (*textures)[str] + 1;
 		}
 		file->SeekI(2, wxFromCurrent);

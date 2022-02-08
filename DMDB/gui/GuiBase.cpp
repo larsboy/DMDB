@@ -100,6 +100,7 @@ wxMenuBar* GuiMenubarManager::createMenubar(wxFrame* parent)
 	toolsMenu->Append(LTHING_ZDOOM, "Doom 1/2 in ZDoom");
 	toolsMenu->Append(LTHING_SKULLT, "Skulltag");
 	toolsMenu->Append(LTHING_HERET, "Heretic");
+	toolsMenu->Append(LTHING_DOOM64, "Doom 64");
 
 	//Options menu:
 	wxMenu* optionMenu=new wxMenu();

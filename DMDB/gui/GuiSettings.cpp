@@ -689,6 +689,7 @@ BEGIN_EVENT_TABLE(GuiSettingsDialog, wxDialog)
 	EVT_BUTTON(LTHING_ZDOOM, GuiSettingsDialog::onPathChange)
 	EVT_BUTTON(LTHING_SKULLT, GuiSettingsDialog::onPathChange)
 	EVT_BUTTON(LTHING_HERET, GuiSettingsDialog::onPathChange)
+	EVT_BUTTON(LTHING_DOOM64, GuiSettingsDialog::onPathChange)
 
 	EVT_BUTTON(BUTTON_DEFAULT, GuiSettingsDialog::onDefault)
     EVT_BUTTON(BUTTON_OK, GuiSettingsDialog::onOk)
@@ -702,7 +703,8 @@ void GuiSettingsDialog::onPathChange(wxCommandEvent& event)
 	if (event.GetId() == LTHING_DOOM) pse = TDG_DOOM;
 	else if (event.GetId() == LTHING_ZDOOM) pse = TDG_ZDOOM;
 	else if (event.GetId() == LTHING_SKULLT) pse = TDG_SKULLT;
-	else pse = TDG_HERET;
+	else if (event.GetId() == LTHING_HERET) pse = TDG_HERET;
+	else pse = TDG_DOOM64;
 
 	wxFileName fname(appSettings->getFullPath(pse));
 	wxFileDialog* fdlg = new wxFileDialog(this, "Select ThingDef file", fname.GetPath(),
