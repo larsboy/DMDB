@@ -47,7 +47,7 @@ using namespace std;
 //Application strings:
 const wxString VENDOR_NAME = "LTB"; //!< Maker of application, as seen by OS
 const wxString APP_NAME = "Doom Map Database"; //!< Name of application, as seen by OS
-const wxString VERSIONSTRING = "Version 1.04"; //!< Current version
+const wxString VERSIONSTRING = "Version 1.05"; //!< Current version
 
 //Default parameters for the main application window (pos/size is stored in
 //registry, so these values are only used the first time):

@@ -28,6 +28,7 @@ WadReader::~WadReader()
 	delete fileSystem;
 	if (thingDefs != NULL)
 		delete thingDefs;
+	thingDefs = NULL;
 	clearState();
 	if (aspects != NULL)
 		delete aspects;
